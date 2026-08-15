@@ -43,16 +43,56 @@
 	</div>
 </nav>
 
+	<!-- Top slideshow -->
+	<div class="top-slideshow">
+		<div class="slides">
+			<img class="slide" src="assets/images/safaritrips-images/safari1.jpeg" alt="Masai Mara Reserve" data-title="Masai Mara Reserve" data-desc="Witness the Great Migration and intimate wildlife encounters with experienced local guides.">
+			<img class="slide" src="assets/images/internationaltrips-images/greece.jpeg" alt="Greek Islands" data-title="Greek Islands" data-desc="Island-hopping itinerary with local dining and historic village visits.">
+			<img class="slide" src="assets/images/kenyantrips-images/diani.jpeg" alt="Diani Beach" data-title="Diani Beach" data-desc="White-sand beaches and relaxed coastal culture — perfect for families.">
+			<img class="slide" src="assets/images/internationaltrips-images/thailand.jpeg" alt="Thailand Explorer" data-title="Thailand Explorer" data-desc="Blend city culture and tropical shores with guided tours and temples.">
+			<img class="slide" src="assets/images/safaritrips-images/safari2.jpeg" alt="Amboseli" data-title="Amboseli National Park" data-desc="Famous for its elephant herds and views of Mount Kilimanjaro.">
+		</div>
+	</div>
+
 <main class="container">
 	<h2>Book a Trip</h2>
 	<div class="card">
-		<form>
-			<div class="form-row"><input placeholder="Full name"></div>
-			<div class="form-row"><input placeholder="Email"></div>
-			<div class="form-row"><select><option>Choose package</option><option>Masai Mara Safari</option><option>Diani Beach</option></select></div>
-			<div class="form-row"><button class="primary">Request Booking</button></div>
+		<form action="handlers/bookings.php" method="post">
+			<div class="form-row"><input name="name" placeholder="Full name" required></div>
+			<div class="form-row"><input name="email" type="email" placeholder="Email" required></div>
+			<div class="form-row"><input name="phone" placeholder="Phone / WhatsApp" required></div>
+			<div class="form-row"><select name="trip" id="trip-select" required>
+				<option value="">Choose package</option>
+				<option>Masai Mara Reserve — Classic Safari</option>
+				<option>Amboseli National Park — Elephant & Mountain Views</option>
+				<option>Tsavo & Coastal Safaris — Wilderness & Shore</option>
+				<option>Diani Beach — Coastal Relaxation</option>
+				<option>Mount Kenya Excursion — Highland Trek</option>
+				<option>Thompson Falls & Waterways — Scenic Day Trip</option>
+				<option>London Highlights — City Break</option>
+				<option>Greek Islands & Culture — Island Hopper</option>
+				<option>Thailand Explorer — Culture & Coast</option>
+			</select></div>
+			<div class="form-row"><input name="start_date" type="date"></div>
+			<div class="form-row"><input name="travellers" type="number" min="1" value="1"></div>
+			<div class="form-row"><textarea name="notes" placeholder="Any special requests or notes"></textarea></div>
+			<div class="form-row"><button class="primary" type="submit">Request Booking</button></div>
 		</form>
 	</div>
+
+	<script>
+	// Preselect trip if ?trip=... is present in the URL
+	(function(){
+		const params = new URLSearchParams(window.location.search);
+		const trip = params.get('trip');
+		if(trip){
+			const sel = document.getElementById('trip-select');
+			for(let i=0;i<sel.options.length;i++){
+				if(sel.options[i].text.toLowerCase().includes(decodeURIComponent(trip).toLowerCase())){ sel.selectedIndex = i; break }
+			}
+		}
+	})();
+	</script>
 </main>
 
 <footer class="site-footer">

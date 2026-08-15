@@ -44,6 +44,17 @@
   </div>
 </nav>
 
+  <!-- Top slideshow (index will show slideshow here) -->
+  <div class="top-slideshow">
+    <div class="slides">
+      <img class="slide" src="assets/images/safaritrips-images/safari1.jpeg" alt="Masai Mara Reserve" data-title="Masai Mara Reserve" data-desc="Witness the Great Migration and intimate wildlife encounters with experienced local guides.">
+      <img class="slide" src="assets/images/internationaltrips-images/greece.jpeg" alt="Greek Islands" data-title="Greek Islands" data-desc="Island-hopping itinerary with local dining and historic village visits.">
+      <img class="slide" src="assets/images/kenyantrips-images/diani.jpeg" alt="Diani Beach" data-title="Diani Beach" data-desc="White-sand beaches and relaxed coastal culture — perfect for families.">
+      <img class="slide" src="assets/images/internationaltrips-images/thailand.jpeg" alt="Thailand Explorer" data-title="Thailand Explorer" data-desc="Blend city culture and tropical shores with guided tours and temples.">
+      <img class="slide" src="assets/images/safaritrips-images/safari2.jpeg" alt="Amboseli" data-title="Amboseli National Park" data-desc="Famous for its elephant herds and views of Mount Kilimanjaro.">
+    </div>
+  </div>
+
 <main class="container">
   <section class="hero">
     <div class="left">
@@ -55,7 +66,21 @@
       </div>
     </div>
     <div class="right">
-      <img src="assets/images/curios/curio1.jpeg" alt="curio" style="width:100%;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.08)">
+      <!-- Booking card sized to cover half page width -->
+      <div class="card booking-card">
+        <h3>Book a Trip</h3>
+        <p class="muted">Quickly reserve a trip — choose a package and request a booking. Click "Book Now" on any trip card to pre-select it.</p>
+        <form action="bookings.html" method="get">
+          <div class="form-row"><select name="trip">
+            <option value="Masai Mara Safari">Masai Mara Safari - 4 days</option>
+            <option value="Amboseli National Park">Amboseli National Park - 3 days</option>
+            <option value="Diani Beach">Diani Beach - 3 days</option>
+            <option value="Bangkok & Phuket Explorer">Bangkok & Phuket Explorer - 7 days</option>
+          </select></div>
+          <div class="form-row"><input type="date" name="start_date"></div>
+          <div class="form-row"><button class="primary" type="submit">Book Trip</button></div>
+        </form>
+      </div>
     </div>
   </section>
 

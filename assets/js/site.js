@@ -50,7 +50,7 @@ function renderProducts(products){
       <p>${p.description}</p>
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="primary" data-add="${p.id}">Add to cart</button>
-        <a class="secondary" href="checkout.html">Buy now</a>
+        <a class="secondary" href="checkout.php">Buy now</a>
       </div>
     `;
     grid.appendChild(card);
@@ -114,7 +114,7 @@ async function renderCartDrawer(){
           <button data-decr="${ci.id}">-</button>
           <input type="number" min="0" value="${ci.qty}" data-qty="${ci.id}" style="width:56px;padding:6px;border-radius:6px;border:1px solid #eee">
           <button data-incr="${ci.id}">+</button>
-          <button data-remove="${ci.id}" style="margin-left:auto;background:transparent;border:0;color:var(--brand-brown)">Remove</button>
+          <button data-remove="${ci.id}" style="margin-left:auto;background:transparent;border:0;color:var(--wood-brown)">Remove</button>
         </div>
       </div>
     `;
@@ -162,7 +162,42 @@ function closeCartDrawer(){
   const backdrop = document.querySelector('.cart-backdrop'); if(backdrop) { backdrop.style.opacity='0'; backdrop.style.pointerEvents='none' }
 }
 
-function checkoutFromDrawer(){ window.location='checkout.html'; }
+async function checkoutFromDrawer(){
+  const cart = getCart();
+  if(!cart || cart.length===0){ alert('Your cart is empty'); return }
+  try{
+    const res = await fetch('api/checkout.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cart})});
+    const data = await res.json();
+    if(!res.ok){ alert(data.error||'Checkout failed'); return }
+    const total = data.total;
+    const ok = confirm('Your total is '+formatCurrency(total)+". Proceed to pay now?");
+    if(!ok) return;
+    // simulate payment confirmation (in real app redirect to payment provider)
+    const payRes = await fetch('api/confirm_payment.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'order_id='+encodeURIComponent(data.order_id)+'&method=card'});
+    const payData = await payRes.json();
+    if(!payRes.ok){ alert(payData.error||'Payment failed'); return }
+    // show receipt
+    showReceipt(payData);
+    clearCart();
+    closeCartDrawer();
+  } catch(err){ console.error(err); alert('Checkout error') }
+}
+
+function showReceipt(payData){
+  const modal = document.createElement('div'); modal.className='receipt-modal';
+  modal.style.position='fixed'; modal.style.left='0'; modal.style.top='0'; modal.style.right='0'; modal.style.bottom='0'; modal.style.background='rgba(0,0,0,0.6)'; modal.style.display='flex'; modal.style.alignItems='center'; modal.style.justifyContent='center'; modal.style.zIndex='9999';
+  const box = document.createElement('div'); box.style.background='#fff'; box.style.padding='20px'; box.style.borderRadius='10px'; box.style.maxWidth='720px'; box.style.width='90%'; box.style.maxHeight='80%'; box.style.overflow='auto';
+  const order = payData.order || payData.order_id ? payData.order : null;
+  box.innerHTML = `<h3>Receipt — Order ${order?order.id:payData.order_id}</h3>`;
+  const items = payData.items || [];
+  const list = document.createElement('div'); list.style.marginTop='12px';
+  items.forEach(it=>{ const row = document.createElement('div'); row.textContent = `${it.qty} x ${it.product_id} @ ${formatCurrency(parseFloat(it.price))}`; list.appendChild(row); });
+  const total = order?order.total:payData.total;
+  const tot = document.createElement('div'); tot.style.marginTop='12px'; tot.style.fontWeight='700'; tot.textContent = 'Total: '+formatCurrency(parseFloat(total || 0));
+  const close = document.createElement('button'); close.className='primary'; close.textContent='Close'; close.style.marginTop='14px'; close.onclick=()=>{ document.body.removeChild(modal) };
+  box.appendChild(list); box.appendChild(tot); box.appendChild(close);
+  modal.appendChild(box); document.body.appendChild(modal);
+}
 
 // expose for console / inline buttons
 window.addToCart = addToCart; window.viewCart = showCartDrawer; window.clearCart = clearCart; window.removeFromCart = removeFromCart;
@@ -171,6 +206,44 @@ window.addToCart = addToCart; window.viewCart = showCartDrawer; window.clearCart
 document.addEventListener('DOMContentLoaded', ()=>{ loadProducts(); renderCartDrawer(); });
 
 // mobile drawer creation
+document.addEventListener('DOMContentLoaded', ()=>{ initSlideshows(); });
+
+function initSlideshows(){
+  document.querySelectorAll('.top-slideshow').forEach(slideshow=>{
+    const slides = Array.from(slideshow.querySelectorAll('.slide'));
+    if(slides.length===0) return;
+    let idx=0;
+    slides.forEach((s,i)=> s.classList.toggle('active', i===0));
+    const dotsWrap = document.createElement('div'); dotsWrap.className='slideshow-dots';
+    slides.forEach((_,i)=>{ const b=document.createElement('button'); b.onclick=()=>{ go(i) }; if(i===0) b.classList.add('active'); dotsWrap.appendChild(b) });
+    slideshow.appendChild(dotsWrap);
+    // add prev/next controls
+    const prev = document.createElement('button'); prev.className='slideshow-prev'; prev.textContent='‹';
+    const next = document.createElement('button'); next.className='slideshow-next'; next.textContent='›';
+    [prev,next].forEach(b=>{ b.style.position='absolute'; b.style.top='50%'; b.style.transform='translateY(-50%)'; b.style.background='rgba(0,0,0,0.35)'; b.style.color='#fff'; b.style.border='0'; b.style.width='36px'; b.style.height='36px'; b.style.borderRadius='18px'; b.style.cursor='pointer'; b.style.zIndex='40' });
+    prev.style.left='12px'; next.style.right='12px'; slideshow.appendChild(prev); slideshow.appendChild(next);
+
+
+    // caption element (richer HTML: title + small description)
+    const caption = document.createElement('div'); caption.className='slideshow-caption'; caption.style.position='absolute'; caption.style.left='20px'; caption.style.bottom='20px'; caption.style.padding='8px 12px'; caption.style.background='rgba(0,0,0,0.5)'; caption.style.color='#fff'; caption.style.borderRadius='6px'; caption.style.zIndex='40'; caption.style.maxWidth='70%'; caption.style.transition='opacity .18s ease'; caption.style.opacity='0'; slideshow.appendChild(caption);
+
+    function updateCaption(){ const s = slides[idx]; const title = s.dataset.title || ''; const desc = s.dataset.desc || ''; caption.innerHTML = `<div class="slideshow-caption-title" style="font-weight:700">${title}</div><div class="slideshow-caption-desc" style="font-size:13px;margin-top:6px;color:rgba(255,255,255,0.9)">${desc}</div>` }
+
+    let timer = setInterval(()=>{ go((idx+1)%slides.length) },4000);
+    function go(n){ slides[idx].classList.remove('active'); dotsWrap.children[idx].classList.remove('active'); idx=n; slides[idx].classList.add('active'); dotsWrap.children[idx].classList.add('active'); updateCaption(); clearInterval(timer); timer=setInterval(()=>{ go((idx+1)%slides.length) },4000) }
+
+    prev.onclick = ()=> go((idx-1+slides.length)%slides.length);
+    next.onclick = ()=> go((idx+1)%slides.length);
+
+    // pause on hover and show caption on hover
+    slideshow.addEventListener('mouseenter', ()=>{ clearInterval(timer); caption.style.opacity='1' });
+    slideshow.addEventListener('mouseleave', ()=>{ clearInterval(timer); timer=setInterval(()=>{ go((idx+1)%slides.length) },4000); caption.style.opacity='0' });
+
+    // initialize caption (hidden by default)
+    updateCaption(); caption.style.opacity='0';
+  });
+}
+
 function ensureMobileMenu(){
   if(document.querySelector('.mobile-menu-drawer')) return;
   const d = document.createElement('nav'); d.className='mobile-menu-drawer';

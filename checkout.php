@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (!isset($_SESSION['csrf'])) {
+	$_SESSION['csrf'] = bin2hex(random_bytes(32));
+}
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -50,15 +56,17 @@
 			<h3>Your Cart</h3>
 			<div id="cartItems" class="muted">Loading items...</div>
 		</div>
-		<div class="card">
-			<h3>Delivery & Payment</h3>
-			<form>
-				<div class="form-row"><input id="name" placeholder="Full name"></div>
-				<div class="form-row"><input id="phone" placeholder="Phone (WhatsApp preferred)"></div>
-				<div class="form-row"><input id="address" placeholder="Delivery address"></div>
-				<div class="form-row"><button class="primary" onclick="completeOrder(event)">Place order</button></div>
-			</form>
-		</div>
+			<div class="card">
+				<h3>Delivery & Payment</h3>
+				<form id="checkoutForm" method="post" action="handlers/checkout.php">
+					<input type="hidden" name="csrf" value="<?php echo htmlspecialchars($_SESSION['csrf']); ?>">
+					<input type="hidden" name="cart" id="cartInput">
+					<div class="form-row"><input id="name" name="name" placeholder="Full name" required></div>
+					<div class="form-row"><input id="phone" name="phone" placeholder="Phone (WhatsApp preferred)" required></div>
+					<div class="form-row"><input id="address" name="address" placeholder="Delivery address" required></div>
+					<div class="form-row"><button type="submit" class="primary">Place order</button></div>
+				</form>
+			</div>
 	</div>
 </main>
 
@@ -82,8 +90,18 @@ async function renderCart(){
 	el.innerHTML=''; el.appendChild(table); el.appendChild(tot);
 }
 
-function completeOrder(e){ e.preventDefault(); alert('Thank you! Your order was received. We will contact you on WhatsApp for confirmation.'); localStorage.removeItem('kh_cart'); window.location='index.html'; }
-renderCart();
+	// attach cart JSON to hidden input before submit
+	document.getElementById('checkoutForm').addEventListener('submit', function(e){
+		const cart = JSON.parse(localStorage.getItem('kh_cart')||'[]');
+		document.getElementById('cartInput').value = JSON.stringify(cart);
+	});
+
+	// if redirected back with success flag, clear localStorage and show a message
+	if (new URLSearchParams(window.location.search).get('success') === '1'){
+		localStorage.removeItem('kh_cart');
+		alert('Thank you! Your order was received. We will contact you on WhatsApp for confirmation.');
+	}
+	renderCart();
 </script>
 <footer class="site-footer">
 	<div class="footer-inner">
@@ -99,7 +117,7 @@ renderCart();
 		</div>
 		<div class="footer-links">
 			<strong>Orders</strong>
-			<a href="checkout.html">Checkout</a>
+			<a href="checkout.php">Checkout</a>
 			<a href="shop.html">Shop</a>
 		</div>
 		<div>

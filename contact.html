@@ -43,25 +43,38 @@
 	</div>
 </nav>
 
-<main class="container">
-	<h2>Contact Us</h2>
-	<div class="cards">
-		<div class="card">
-			<h3>Send a Message</h3>
-			<form>
-				<div class="form-row"><input placeholder="Your name"></div>
-				<div class="form-row"><input placeholder="Email"></div>
-				<div class="form-row"><textarea placeholder="Message"></textarea></div>
-				<div class="form-row"><button class="primary">Send Message</button></div>
-			</form>
-		</div>
-		<div class="card">
-			<h3>Other ways to reach us</h3>
-			<p class="muted">Email: info@karibuhorizons.co.ke</p>
-			<p class="muted">Phone / WhatsApp: +254 711 595474</p>
-			<p class="muted">Address: A108 Adam Street, Nairobi, Kenya</p>
+	<!-- Top slideshow -->
+	<div class="top-slideshow">
+		<div class="slides">
+			<img class="slide" src="assets/images/safaritrips-images/safari1.jpeg" alt="Masai Mara Reserve" data-title="Masai Mara Reserve" data-desc="Witness the Great Migration and intimate wildlife encounters with experienced local guides.">
+			<img class="slide" src="assets/images/internationaltrips-images/greece.jpeg" alt="Greek Islands" data-title="Greek Islands" data-desc="Island-hopping itinerary with local dining and historic village visits.">
+			<img class="slide" src="assets/images/kenyantrips-images/diani.jpeg" alt="Diani Beach" data-title="Diani Beach" data-desc="White-sand beaches and relaxed coastal culture — perfect for families.">
+			<img class="slide" src="assets/images/internationaltrips-images/thailand.jpeg" alt="Thailand Explorer" data-title="Thailand Explorer" data-desc="Blend city culture and tropical shores with guided tours and temples.">
+			<img class="slide" src="assets/images/safaritrips-images/safari2.jpeg" alt="Amboseli" data-title="Amboseli National Park" data-desc="Famous for its elephant herds and views of Mount Kilimanjaro.">
 		</div>
 	</div>
+
+<main class="container">
+	<h2>Contact Us</h2>
+		<div class="cards">
+			<div class="card">
+				<h3>Send a Message</h3>
+				<form action="handlers/contact.php" method="post">
+					<div class="form-row"><input name="name" placeholder="Your name" required></div>
+					<div class="form-row"><input name="email" type="email" placeholder="Email" required></div>
+					<div class="form-row"><textarea name="message" placeholder="Message" required></textarea></div>
+					<div class="form-row"><button class="primary" type="submit">Send Message</button></div>
+				</form>
+			</div>
+			<div class="card">
+				<h3>Contact Information</h3>
+				<p class="muted"><strong>Email:</strong> info@karibuhorizons.co.ke</p>
+				<p class="muted"><strong>Phone / WhatsApp:</strong> +254 711 595474</p>
+				<p class="muted"><strong>Office:</strong> A108 Adam Street, Nairobi, Kenya</p>
+				<p class="muted"><strong>Office Hours:</strong> Mon–Fri 9:00–17:00 EAT</p>
+				<div style="margin-top:12px"><a class="secondary" href="https://maps.google.com" target="_blank">Open map</a></div>
+			</div>
+		</div>
 </main>
 
 <footer class="site-footer">
