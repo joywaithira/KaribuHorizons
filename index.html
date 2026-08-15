@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Karibu Horizons</title>
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="container nav-inner">
+    <div class="brand">
+      <div class="logo-mark">KH</div>
+      <div>
+        <h1>Karibu Horizons</h1>
+        <p>Bringing Africa's Heritage to Your Home</p>
+      </div>
+    </div>
+    <button class="mobile-toggle" aria-label="Menu">☰</button>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="packages.html">Packages</a>
+      <a href="blog.html">Blog</a>
+      <a href="shop.html">Shop</a>
+      <div class="dropdown">
+        <button class="dropdown-toggle">Trips ▾</button>
+        <div class="dropdown-menu">
+          <a href="safaritours.html">Safari Trips</a>
+          <a href="kenyantrips.html">Kenyan Trips</a>
+          <a href="internationaltrips.html">International Trips</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropdown-toggle">About Us ▾</button>
+        <div class="dropdown-menu">
+          <a href="whyus.html">Why Us</a>
+          <a href="contact.html">Contact</a>
+          <a href="terms.html">Terms</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+  <section class="hero">
+    <div class="left">
+      <h2>Discover Authentic African Handcrafted Artifacts & Memorable Trips</h2>
+      <p>Karibu Horizons curates authentic handcrafted curios and unforgettable travel experiences across Kenya and the world. Browse packages, shop unique souvenirs, and book guided safaris and cultural tours.</p>
+      <div class="hero-cta">
+        <a class="cta" href="packages.html">Explore Packages</a>
+        <a style="margin-left:12px;" href="shop.html">Visit Shop</a>
+      </div>
+    </div>
+    <div class="right">
+      <img src="assets/images/curios/curio1.jpeg" alt="curio" style="width:100%;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,0.08)">
+    </div>
+  </section>
+
+  <h3>Featured Packages</h3>
+  <div class="cards">
+    <div class="card">
+      <img src="assets/images/safaritrips-images/safari1.jpeg" alt="safari">
+      <h3>Classic Masai Mara Safari</h3>
+      <p class="muted">4 days • Wildlife viewing • Comfortable camps</p>
+      <p>Experience the Great Migration and intimate wildlife encounters with experienced local guides.</p>
+      <a class="secondary" href="packages.html">View package</a>
+    </div>
+    <div class="card">
+      <img src="assets/images/kenyantrips-images/diani.jpeg" alt="beach">
+      <h3>Diani Beach Relaxation</h3>
+      <p class="muted">3 days • Beach • Water sports</p>
+      <p>White sands, turquoise waters and a relaxed coastal culture — perfect for a family getaway.</p>
+      <a class="secondary" href="packages.html">View package</a>
+    </div>
+    <div class="card">
+      <img src="assets/images/internationaltrips-images/thailand.jpeg" alt="international">
+      <h3>Bangkok & Phuket Explorer</h3>
+      <p class="muted">7 days • Cultural & Beach</p>
+      <p>Blend city culture and tropical shores with guided tours, markets, and iconic temples.</p>
+      <a class="secondary" href="packages.html">View package</a>
+    </div>
+  </div>
+
+  <h3>Shop Curios</h3>
+  <div class="cards">
+    <div class="card">
+      <img src="assets/images/curios/curio2.jpeg" alt="curio2">
+      <h3>Hand-carved Zebra Bowl</h3>
+      <p class="muted">Unique handcrafted bowl — perfect as a centerpiece.</p>
+      <button class="primary" onclick="addToCart('zebra-bowl')">Add to cart</button>
+    </div>
+    <div class="card">
+      <img src="assets/images/curios/curio3.jpeg" alt="curio3">
+      <h3>Safari Animal Figurines</h3>
+      <p class="muted">Set of 3 — elephant, lion, zebra.</p>
+      <button class="primary" onclick="addToCart('animal-set')">Add to cart</button>
+    </div>
+    <div class="card">
+      <img src="assets/images/curios/curio4.jpeg" alt="curio4">
+      <h3>Wooden Salad Serving Set</h3>
+      <p class="muted">Perfect for dining and display.</p>
+      <button class="primary" onclick="addToCart('salad-set')">Add to cart</button>
+    </div>
+  </div>
+
+  <h3>Testimonials</h3>
+  <div class="testimonials">
+    <div class="testimonial">
+      <strong>Saul Goodman</strong>
+      <p class="muted">"An unforgettable safari — guides were knowledgeable and truly caring. Highly recommended!"</p>
+    </div>
+    <div class="testimonial">
+      <strong>Sara Wilsson</strong>
+      <p class="muted">"Beautiful handcrafted bowls — the quality and detail is exceptional."</p>
+    </div>
+  </div>
+
+  <h3>Popular Destinations</h3>
+  <div class="cards">
+    <div class="card">
+      <img src="assets/images/safaritrips-images/safari2.jpeg" alt="amboseli">
+      <h3>Amboseli National Park</h3>
+      <p class="muted">Famous for its elephant herds and views of Mount Kilimanjaro.</p>
+    </div>
+    <div class="card">
+      <img src="assets/images/kenyantrips-images/oldtownmombasa.jpeg" alt="mombasa">
+      <h3>Old Town Mombasa</h3>
+      <p class="muted">A cultural melting pot of spice markets and historical architecture.</p>
+    </div>
+    <div class="card">
+      <img src="assets/images/internationaltrips-images/greece.jpeg" alt="greece">
+      <h3>Greek Islands</h3>
+      <p class="muted">Sun-soaked islands and traditional villages — a perfect escape.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <div class="logo-mark">KH</div>
+        <div>
+          <strong>Karibu Horizons</strong>
+          <div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+        </div>
+      </div>
+      <div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
+      <div class="footer-note">We source ethically and support artisan co-ops across Kenya.</div>
+    </div>
+    <div class="footer-links">
+      <strong>Explore</strong>
+      <a href="packages.html">Packages</a>
+      <a href="safaritours.html">Safari Trips</a>
+      <a href="shop.html">Shop</a>
+    </div>
+    <div>
+      <strong>Follow us</strong>
+      <div class="socials">
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+      </div>
+      <div class="footer-note">© Karibu Horizons. Designed with care.</div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>

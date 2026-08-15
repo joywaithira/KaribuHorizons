@@ -1,0 +1,37 @@
+[
+  {
+    "id":"spoons",
+    "title":"Wildlife Wooden Spoons",
+    "price":12.99,
+    "image":"assets/images/curios/curio1.jpeg",
+    "description":"Hand-carved wooden spoons with zebra and giraffe handle designs. Food-safe finish."
+  },
+  {
+    "id":"salad-set",
+    "title":"Safari Wooden Salad Set",
+    "price":24.99,
+    "image":"assets/images/curios/curio2.jpeg",
+    "description":"Unique hand-carved zebra & giraffe handles — ideal for buffets and home décor."
+  },
+  {
+    "id":"zebra-bowl",
+    "title":"Hand-carved Zebra Decorative Bowl",
+    "price":34.50,
+    "image":"assets/images/curios/curio3.jpeg",
+    "description":"Elegant and functional zebra bowl — perfect as a fruit bowl or centerpiece."
+  },
+  {
+    "id":"figurines",
+    "title":"Safari Animal Figurines",
+    "price":18.00,
+    "image":"assets/images/curios/curio4.jpeg",
+    "description":"Choose from Zebra, Elephant, or Lion figurines. Great souvenirs and decor."
+  },
+  {
+    "id":"curio5",
+    "title":"Handcrafted Decorative Plate",
+    "price":28.00,
+    "image":"assets/images/curios/curio5.jpeg",
+    "description":"A beautifully finished plate showcasing local carving techniques."
+  }
+]

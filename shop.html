@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Shop — Karibu Horizons</title>
+	<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<nav class="site-nav">
+	<div class="container nav-inner">
+		<div class="brand">
+			<div class="logo-mark">KH</div>
+			<div>
+				<h1>Karibu Horizons</h1>
+				<p>Bringing Africa's Heritage to Your Home</p>
+			</div>
+		</div>
+		<button class="mobile-toggle" aria-label="Menu">☰</button>
+		<div class="nav-links">
+			<a href="index.html">Home</a>
+			<a href="about.html">About</a>
+			<a href="packages.html">Packages</a>
+			<a href="blog.html">Blog</a>
+			<a href="shop.html">Shop</a>
+			<div class="dropdown">
+				<button class="dropdown-toggle">Trips ▾</button>
+				<div class="dropdown-menu">
+					  <a href="safaritours.html">Safari Trips</a>
+					<a href="kenyantrips.html">Kenyan Trips</a>
+					<a href="internationaltrips.html">International Trips</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button class="dropdown-toggle">About Us ▾</button>
+				<div class="dropdown-menu">
+					<a href="whyus.html">Why Us</a>
+					<a href="contact.html">Contact</a>
+					<a href="terms.html">Terms</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<main class="container">
+	<h2>Shop Curios</h2>
+	<p class="muted">Handcrafted gifts and décor — support Kenyan artisans.</p>
+
+	<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+		<strong>WhatsApp:</strong>
+		<a href="https://wa.me/254711595474" target="_blank">+254 711 595474</a>
+		<button style="margin-left:auto;" onclick="viewCart()">View Cart / Checkout</button>
+	</div>
+
+	<div class="cards">
+		<div class="card">
+			<img src="assets/images/curios/curio1.jpeg" alt="curio1">
+			<h3>Wildlife Wooden Spoons</h3>
+			<p class="muted">Zebra and giraffe handle designs.</p>
+			<button class="primary" onclick="addToCart('spoons')">Add to cart</button>
+		</div>
+		<div class="card">
+			<img src="assets/images/curios/curio2.jpeg" alt="curio2">
+			<h3>Safari Wooden Salad Set</h3>
+			<p class="muted">Hand-carved handles, great for display.</p>
+			<button class="primary" onclick="addToCart('salad-set')">Add to cart</button>
+		</div>
+		<div class="card">
+			<img src="assets/images/curios/curio3.jpeg" alt="curio3">
+			<h3>Zebra Decorative Bowl</h3>
+			<p class="muted">Elegant functional bowl for candy or fruit.</p>
+			<button class="primary" onclick="addToCart('zebra-bowl')">Add to cart</button>
+		</div>
+		<div class="card">
+			<img src="assets/images/curios/curio4.jpeg" alt="curio4">
+			<h3>Safari Animal Figurines</h3>
+			<p class="muted">Elephant, lion, and zebra figurines.</p>
+			<button class="primary" onclick="addToCart('figurines')">Add to cart</button>
+		</div>
+	</div>
+
+</main>
+
+<footer class="site-footer">
+	<div class="footer-inner">
+		<div>
+			<div class="footer-brand">
+				<div class="logo-mark">KH</div>
+				<div>
+					<strong>Karibu Horizons</strong>
+					<div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+				</div>
+			</div>
+			<div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
+		</div>
+		<div class="footer-links">
+			<strong>Shop</strong>
+			<a href="shop.html">All items</a>
+			<a href="checkout.html">Checkout</a>
+		</div>
+		<div>
+			<strong>Follow us</strong>
+			<div class="socials">
+				<a href="#">Facebook</a>
+				<a href="#">Instagram</a>
+				<a href="#">Pinterest</a>
+			</div>
+			<div class="footer-note">© Karibu Horizons. Support African artisans. Designed with care.</div>
+		</div>
+	</div>
+</footer>
+
+<script src="assets/js/site.js"></script>
+</body>
+</html>
