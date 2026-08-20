@@ -36,10 +36,17 @@ async function loadProducts(){
   } catch(err){ console.error('Failed to load products', err) }
 }
 
+async function loadBlogPosts(){
+  try {
+    const res = await fetch('assets/data/blog.json');
+    const posts = await res.json();
+    renderBlogPosts(posts);
+  } catch(err){ console.error('Failed to load blog posts', err) }
+}
+
 function renderProducts(products){
-  const grid = document.querySelector('.cards');
+  const grid = document.querySelector('#shop-grid');
   if(!grid) return;
-  // clear existing to avoid duplicates
   grid.innerHTML = '';
   products.forEach(p=>{
     const card = document.createElement('div'); card.className='card';
@@ -202,11 +209,22 @@ function showReceipt(payData){
 // expose for console / inline buttons
 window.addToCart = addToCart; window.viewCart = showCartDrawer; window.clearCart = clearCart; window.removeFromCart = removeFromCart;
 
-// initialize product grid on shop pages
-document.addEventListener('DOMContentLoaded', ()=>{ loadProducts(); renderCartDrawer(); });
+// initialize page-specific content after the DOM is ready
+document.addEventListener('DOMContentLoaded', ()=>{
+  if (document.body.dataset.page === 'shop') {
+    loadProducts();
+  }
+
+  if (document.body.dataset.page === 'blog') {
+    loadBlogPosts();
+  }
+
+  renderCartDrawer();
+  initSlideshows();
+  ensureMobileMenu();
+});
 
 // mobile drawer creation
-document.addEventListener('DOMContentLoaded', ()=>{ initSlideshows(); });
 
 function initSlideshows(){
   document.querySelectorAll('.top-slideshow').forEach(slideshow=>{
@@ -224,23 +242,14 @@ function initSlideshows(){
     prev.style.left='12px'; next.style.right='12px'; slideshow.appendChild(prev); slideshow.appendChild(next);
 
 
-    // caption element (richer HTML: title + small description)
-    const caption = document.createElement('div'); caption.className='slideshow-caption'; caption.style.position='absolute'; caption.style.left='20px'; caption.style.bottom='20px'; caption.style.padding='8px 12px'; caption.style.background='rgba(0,0,0,0.5)'; caption.style.color='#fff'; caption.style.borderRadius='6px'; caption.style.zIndex='40'; caption.style.maxWidth='70%'; caption.style.transition='opacity .18s ease'; caption.style.opacity='0'; slideshow.appendChild(caption);
-
-    function updateCaption(){ const s = slides[idx]; const title = s.dataset.title || ''; const desc = s.dataset.desc || ''; caption.innerHTML = `<div class="slideshow-caption-title" style="font-weight:700">${title}</div><div class="slideshow-caption-desc" style="font-size:13px;margin-top:6px;color:rgba(255,255,255,0.9)">${desc}</div>` }
-
     let timer = setInterval(()=>{ go((idx+1)%slides.length) },4000);
-    function go(n){ slides[idx].classList.remove('active'); dotsWrap.children[idx].classList.remove('active'); idx=n; slides[idx].classList.add('active'); dotsWrap.children[idx].classList.add('active'); updateCaption(); clearInterval(timer); timer=setInterval(()=>{ go((idx+1)%slides.length) },4000) }
+    function go(n){ slides[idx].classList.remove('active'); dotsWrap.children[idx].classList.remove('active'); idx=n; slides[idx].classList.add('active'); dotsWrap.children[idx].classList.add('active'); clearInterval(timer); timer=setInterval(()=>{ go((idx+1)%slides.length) },4000) }
 
     prev.onclick = ()=> go((idx-1+slides.length)%slides.length);
     next.onclick = ()=> go((idx+1)%slides.length);
 
-    // pause on hover and show caption on hover
-    slideshow.addEventListener('mouseenter', ()=>{ clearInterval(timer); caption.style.opacity='1' });
-    slideshow.addEventListener('mouseleave', ()=>{ clearInterval(timer); timer=setInterval(()=>{ go((idx+1)%slides.length) },4000); caption.style.opacity='0' });
-
-    // initialize caption (hidden by default)
-    updateCaption(); caption.style.opacity='0';
+    slideshow.addEventListener('mouseenter', ()=>{ clearInterval(timer) });
+    slideshow.addEventListener('mouseleave', ()=>{ clearInterval(timer); timer=setInterval(()=>{ go((idx+1)%slides.length) },4000); });
   });
 }
 
@@ -262,6 +271,25 @@ function ensureMobileMenu(){
   document.body.appendChild(d);
 }
 
-document.addEventListener('DOMContentLoaded', ()=>{ ensureMobileMenu(); });
+function renderBlogPosts(posts){
+  const feed = document.querySelector('#blog-posts');
+  if(!feed) return;
+  feed.innerHTML = '';
+
+  posts.forEach(post => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.innerHTML = `
+      ${post.cover ? `<img src="${post.cover}" alt="${post.title}">` : ''}
+      <h3>${post.title}</h3>
+      <p class="muted">${post.date} • ${post.category}</p>
+      <p>${post.summary}</p>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px">
+        <a class="secondary" href="${post.link || 'blog.html'}">Read story</a>
+      </div>
+    `;
+    feed.appendChild(card);
+  });
+}
 
 

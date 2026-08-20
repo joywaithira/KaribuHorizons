@@ -1,0 +1,29 @@
+[
+  {
+    "id": "maasai-history",
+    "title": "History of the Maasai People",
+    "category": "Culture",
+    "date": "May 2026",
+    "summary": "Explore traditional Maasai art, song, and the role of the community in conservancy efforts.",
+    "cover": "assets/images/safaritrips-images/safari1.jpeg",
+    "link": "blog.html"
+  },
+  {
+    "id": "diani-coast",
+    "title": "Sun, Salt and Stories from Diani",
+    "category": "Travel",
+    "date": "June 2026",
+    "summary": "A coastal escape shaped by sunrise walks, fresh seafood, and local culture along the Kenyan shore.",
+    "cover": "assets/images/kenyantrips-images/diani.jpeg",
+    "link": "blog.html"
+  },
+  {
+    "id": "greece-islands",
+    "title": "Island Hopping Through Greece",
+    "category": "Adventure",
+    "date": "July 2026",
+    "summary": "From whitewashed villages to blue waters, this journey blends history, food, and slow travel.",
+    "cover": "assets/images/internationaltrips-images/greece.jpeg",
+    "link": "blog.html"
+  }
+]

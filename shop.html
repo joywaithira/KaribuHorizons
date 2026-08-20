@@ -4,9 +4,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Shop — Karibu Horizons</title>
-	<link rel="stylesheet" href="assets/css/site.css">
-</head>
-<body>
+	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/icon.png"></head>
+<body data-page="shop">
 <nav class="site-nav">
 	<div class="container nav-inner">
 		<div class="brand">
@@ -53,32 +52,7 @@
 		<button style="margin-left:auto;" onclick="viewCart()">View Cart / Checkout</button>
 	</div>
 
-	<div class="cards">
-		<div class="card">
-			<img src="assets/images/curios/curio1.jpeg" alt="curio1">
-			<h3>Wildlife Wooden Spoons</h3>
-			<p class="muted">Zebra and giraffe handle designs.</p>
-			<button class="primary" onclick="addToCart('spoons')">Add to cart</button>
-		</div>
-		<div class="card">
-			<img src="assets/images/curios/curio2.jpeg" alt="curio2">
-			<h3>Safari Wooden Salad Set</h3>
-			<p class="muted">Hand-carved handles, great for display.</p>
-			<button class="primary" onclick="addToCart('salad-set')">Add to cart</button>
-		</div>
-		<div class="card">
-			<img src="assets/images/curios/curio3.jpeg" alt="curio3">
-			<h3>Zebra Decorative Bowl</h3>
-			<p class="muted">Elegant functional bowl for candy or fruit.</p>
-			<button class="primary" onclick="addToCart('zebra-bowl')">Add to cart</button>
-		</div>
-		<div class="card">
-			<img src="assets/images/curios/curio4.jpeg" alt="curio4">
-			<h3>Safari Animal Figurines</h3>
-			<p class="muted">Elephant, lion, and zebra figurines.</p>
-			<button class="primary" onclick="addToCart('figurines')">Add to cart</button>
-		</div>
-	</div>
+	<div id="shop-grid" class="cards shop-grid"></div>
 
 </main>
 

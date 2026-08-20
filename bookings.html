@@ -4,8 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>Bookings — Karibu Horizons</title>
-	<link rel="stylesheet" href="assets/css/site.css">
-</head>
+	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/icon.png"></head>
 <body>
 <nav class="site-nav">
 	<div class="container nav-inner">
@@ -43,36 +42,17 @@
 	</div>
 </nav>
 
-	<!-- Top slideshow -->
-	<div class="top-slideshow">
-		<div class="slides">
-			<img class="slide" src="assets/images/safaritrips-images/safari1.jpeg" alt="Masai Mara Reserve" data-title="Masai Mara Reserve" data-desc="Witness the Great Migration and intimate wildlife encounters with experienced local guides.">
-			<img class="slide" src="assets/images/internationaltrips-images/greece.jpeg" alt="Greek Islands" data-title="Greek Islands" data-desc="Island-hopping itinerary with local dining and historic village visits.">
-			<img class="slide" src="assets/images/kenyantrips-images/diani.jpeg" alt="Diani Beach" data-title="Diani Beach" data-desc="White-sand beaches and relaxed coastal culture — perfect for families.">
-			<img class="slide" src="assets/images/internationaltrips-images/thailand.jpeg" alt="Thailand Explorer" data-title="Thailand Explorer" data-desc="Blend city culture and tropical shores with guided tours and temples.">
-			<img class="slide" src="assets/images/safaritrips-images/safari2.jpeg" alt="Amboseli" data-title="Amboseli National Park" data-desc="Famous for its elephant herds and views of Mount Kilimanjaro.">
-		</div>
-	</div>
-
 <main class="container">
 	<h2>Book a Trip</h2>
-	<div class="card">
+	<div class="card booking-card">
 		<form action="handlers/bookings.php" method="post">
 			<div class="form-row"><input name="name" placeholder="Full name" required></div>
 			<div class="form-row"><input name="email" type="email" placeholder="Email" required></div>
 			<div class="form-row"><input name="phone" placeholder="Phone / WhatsApp" required></div>
-			<div class="form-row"><select name="trip" id="trip-select" required>
-				<option value="">Choose package</option>
-				<option>Masai Mara Reserve — Classic Safari</option>
-				<option>Amboseli National Park — Elephant & Mountain Views</option>
-				<option>Tsavo & Coastal Safaris — Wilderness & Shore</option>
-				<option>Diani Beach — Coastal Relaxation</option>
-				<option>Mount Kenya Excursion — Highland Trek</option>
-				<option>Thompson Falls & Waterways — Scenic Day Trip</option>
-				<option>London Highlights — City Break</option>
-				<option>Greek Islands & Culture — Island Hopper</option>
-				<option>Thailand Explorer — Culture & Coast</option>
-			</select></div>
+			<div class="form-row">
+				<input id="trip-search" name="trip" type="text" list="trip-search-options" placeholder="Type a destination or package name" autocomplete="off" required>
+				<datalist id="trip-search-options"></datalist>
+			</div>
 			<div class="form-row"><input name="start_date" type="date"></div>
 			<div class="form-row"><input name="travellers" type="number" min="1" value="1"></div>
 			<div class="form-row"><textarea name="notes" placeholder="Any special requests or notes"></textarea></div>
@@ -81,15 +61,44 @@
 	</div>
 
 	<script>
-	// Preselect trip if ?trip=... is present in the URL
 	(function(){
+		const destinationOptions = [
+			'Masai Mara Reserve — Classic Safari',
+			'Amboseli National Park — Elephant & Mountain Views',
+			'Tsavo & Coastal Safaris — Wilderness & Shore',
+			'Diani Beach — Coastal Relaxation',
+			'Mount Kenya Excursion — Highland Trek',
+			'Thompson Falls & Waterways — Scenic Day Trip',
+			'London Highlights — City Break',
+			'Greek Islands & Culture — Island Hopper',
+			'Thailand Explorer — Culture & Coast',
+			'Kenya Highlights Journey',
+			'Highland & Heritage Circuit',
+			'Europe in One Go'
+		];
+
+		const searchInput = document.getElementById('trip-search');
+		const datalist = document.getElementById('trip-search-options');
+
+		function renderSuggestions(query=''){
+			const q = query.trim().toLowerCase();
+			datalist.innerHTML = '';
+			const matches = destinationOptions.filter(option => !q || option.toLowerCase().includes(q)).slice(0, 10);
+			matches.forEach(option => {
+				const opt = document.createElement('option');
+				opt.value = option;
+				datalist.appendChild(opt);
+			});
+		}
+
+		searchInput.addEventListener('input', (e) => renderSuggestions(e.target.value));
+		renderSuggestions();
+
 		const params = new URLSearchParams(window.location.search);
 		const trip = params.get('trip');
 		if(trip){
-			const sel = document.getElementById('trip-select');
-			for(let i=0;i<sel.options.length;i++){
-				if(sel.options[i].text.toLowerCase().includes(decodeURIComponent(trip).toLowerCase())){ sel.selectedIndex = i; break }
-			}
+			const match = destinationOptions.find(option => option.toLowerCase().includes(decodeURIComponent(trip).toLowerCase()));
+			if(match) searchInput.value = match;
 		}
 	})();
 	</script>
