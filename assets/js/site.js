@@ -160,6 +160,16 @@ function initCountryCallingCodes(){
   });
 }
 
+function ensureDesktopShopLink(){
+  document.querySelectorAll('.nav-links').forEach(nav => {
+    if (nav.querySelector('a[href="/shop/"]')) return;
+    const shopLink = document.createElement('a');
+    shopLink.href = '/shop/';
+    shopLink.textContent = 'Shop';
+    nav.appendChild(shopLink);
+  });
+}
+
 // initialize page-specific content after the DOM is ready
 document.addEventListener('DOMContentLoaded', ()=>{
   initCountryCallingCodes();
@@ -255,6 +265,7 @@ function initSlideshows(){
 }
 
 function ensureMobileMenu(){
+  ensureDesktopShopLink();
   if(document.querySelector('.mobile-menu-drawer')) return;
     const rootPrefix = window.location.pathname.includes('/tripspages/') ? '../' : '';
   const d = document.createElement('nav'); d.className='mobile-menu-drawer';
@@ -267,6 +278,7 @@ function ensureMobileMenu(){
       <a href="${rootPrefix}kenyantrips.html">Kenyan Trips</a>
       <a href="${rootPrefix}internationaltrips.html">International Trips</a>
       <a href="${rootPrefix}blog.html">Blog</a>
+      <a href="/shop/">Shop</a>
       <a href="${rootPrefix}contact.html">Contact</a>
       <a href="${rootPrefix}terms.html">Terms</a>
   `;

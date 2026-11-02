@@ -1,0 +1,9 @@
+# Existing local environments and shop runtime data
+.env
+.env.*
+*.log
+shop/data/orders.json
+shop/data/orders.lock
+shop/data/shop-errors.log
+vendor/
+node_modules/

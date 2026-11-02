@@ -1,0 +1,52 @@
+/* Responsive fitting for uploaded/real product images */
+.shop-hero img,
+.product-card img,
+.product-image,
+.cart-table img {
+  width: 100% !important;
+  max-width: 100%;
+  object-fit: contain !important;
+  object-position: center;
+  background: #f8f2ea;
+}
+
+.product-card img {
+  aspect-ratio: 4 / 3;
+  height: min(230px, 55vw) !important;
+}
+
+.shop-hero img {
+  height: auto !important;
+  max-height: 340px;
+}
+
+.product-image {
+  height: auto !important;
+  max-height: 620px;
+}
+
+.cart-table img {
+  height: 80px !important;
+}
+
+img[data-image-fallback="true"] {
+  display: none;
+}
+
+@media (max-width: 580px) {
+  .product-card img {
+    height: min(280px, 72vw) !important;
+  }
+
+  .shop-hero img {
+    max-height: 280px;
+  }
+
+  .product-image {
+    max-height: 420px;
+  }
+
+  .cart-table img {
+    height: 72px !important;
+  }
+}

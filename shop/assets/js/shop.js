@@ -1,0 +1,3 @@
+document.querySelectorAll('[data-add-to-cart]').forEach(button=>{button.addEventListener('click',()=>{const form=button.closest('form');if(form)form.submit();});});
+const qty=document.querySelector('[name="quantity"]');if(qty){qty.addEventListener('change',()=>{const max=Number(qty.max||0);if(Number(qty.value)>max)qty.value=String(max);if(Number(qty.value)<1)qty.value='1';});}
+const checkout=document.querySelector('#checkout-form');if(checkout){checkout.addEventListener('submit',()=>{const submit=checkout.querySelector('[type="submit"]');submit.disabled=true;submit.textContent='Creating order…';});}

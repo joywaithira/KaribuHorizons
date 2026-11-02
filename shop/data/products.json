@@ -1,0 +1,11 @@
+[
+  {
+    "id":"sample-curio-001","name":"Handcrafted Beaded Bracelet — Sample","slug":"sample-beaded-bracelet","category":"Jewellery","short_description":"Demonstration sample of a handmade Kenyan-inspired trinket.","full_description":"SAMPLE PRODUCT ONLY — not currently offered for sale. Replace this entry with a real product before launch. This handcrafted-style trinket demonstrates the shop catalogue.","price":2500,"stock":5,"sku":"SAMPLE-BD-001","main_image":"/assets/images/curios/curios1.jpeg","additional_images":["/assets/images/curios/curios2.jpeg"],"weight_size":"Adjustable bracelet","active":true,"featured":true,"created_at":"2026-11-02"
+  },
+  {
+    "id":"sample-curio-002","name":"Wooden Safari Ornament — Sample","slug":"sample-wooden-safari-ornament","category":"Home Decor","short_description":"Demonstration physical souvenir inspired by Kenyan wildlife.","full_description":"SAMPLE PRODUCT ONLY — placeholder catalogue item. Replace with an actual artefact image, description, price and stock before opening the shop.","price":1800,"stock":8,"sku":"SAMPLE-WD-002","main_image":"/assets/images/curios/curios3.jpeg","additional_images":["/assets/images/curios/curios4.jpeg"],"weight_size":"Approx. 12 cm","active":true,"featured":true,"created_at":"2026-10-28"
+  },
+  {
+    "id":"sample-curio-003","name":"Kanga-Inspired Keepsake — Sample","slug":"sample-kanga-keepsake","category":"Textiles","short_description":"Demonstration sample for a colourful travel keepsake.","full_description":"SAMPLE PRODUCT ONLY — this product is not available for purchase. Update this catalogue entry with accurate textile details, care instructions and verified stock.","price":3200,"stock":3,"sku":"SAMPLE-TX-003","main_image":"/assets/images/curios/curios5.jpeg","additional_images":[],"weight_size":"Medium decorative keepsake","active":true,"featured":false,"created_at":"2026-10-20"
+  }
+]

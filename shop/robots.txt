@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /shop/cart.php
+Disallow: /shop/checkout.php
+Disallow: /shop/confirmation.php
+Allow: /shop/
