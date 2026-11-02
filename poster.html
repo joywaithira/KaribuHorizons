@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TraveL Den Adventures Poster</title>
+  <style>
+    :root {
+      --bg: #f6efe4;
+      --card-bg: #fcf7f0;
+      --wood-brown: #402717;
+      --brand-green: #2f5a2e;
+      --brand-green-dark: #244923;
+      --accent-ochre: #b77b2e;
+      --muted: #7a6756;
+      --beige-1: #efe6d9;
+      --beige-2: #e2d6c5;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at top, rgba(183, 123, 46, 0.12), transparent 32%),
+        linear-gradient(135deg, #f6efe4 0%, #efe6d9 100%);
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--wood-brown);
+    }
+
+    .poster {
+      position: relative;
+      width: min(92vw, 1080px);
+      min-height: 1500px;
+      background: linear-gradient(180deg, #f9f4ee 0%, #f2eadb 100%);
+      border: 10px solid rgba(64, 39, 23, 0.14);
+      box-shadow: 0 35px 85px rgba(40, 25, 17, 0.18);
+      overflow: hidden;
+    }
+
+    .poster::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 26px 42px 18px;
+      background: rgba(64, 39, 23, 0.96);
+      color: white;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .brand-wrap img {
+      width: 94px;
+      height: 94px;
+      object-fit: contain;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      padding: 8px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-text strong {
+      font-size: clamp(1.2rem, 2vw, 2rem);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .brand-text span {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .badge {
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #f8e7cb;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      padding: 36px 42px 26px;
+      z-index: 2;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 420px;
+    }
+
+    .tag {
+      display: inline-block;
+      align-self: flex-start;
+      background: rgba(47, 90, 46, 0.12);
+      color: var(--brand-green-dark);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(3.2rem, 5vw, 6rem);
+      line-height: 0.96;
+      text-transform: uppercase;
+      letter-spacing: -0.06em;
+      color: var(--wood-brown);
+    }
+
+    .subhead {
+      margin: 20px 0 0;
+      max-width: 600px;
+      font-size: clamp(1.02rem, 1.5vw, 1.45rem);
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 26px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 24px rgba(64, 39, 23, 0.12);
+    }
+
+    .btn-primary {
+      background: var(--brand-green);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--wood-brown);
+      border: 1px solid rgba(64, 39, 23, 0.1);
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 420px;
+      border-radius: 28px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.25)),
+        url('assets/images/safaritrips-images/safari1.jpeg') center/cover no-repeat;
+      box-shadow: 0 26px 50px rgba(36, 44, 20, 0.18);
+    }
+
+    .floating-card {
+      position: absolute;
+      right: 22px;
+      bottom: 22px;
+      left: 22px;
+      background: rgba(250, 247, 241, 0.92);
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(64,39,23,0.08);
+      border-radius: 18px;
+      padding: 18px 18px 14px;
+      box-shadow: 0 16px 28px rgba(40, 25, 17, 0.14);
+    }
+
+    .floating-card .mini-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+    }
+
+    .floating-card strong {
+      display: block;
+      margin-top: 6px;
+      font-size: clamp(1.1rem, 2vw, 1.8rem);
+      line-height: 1.2;
+    }
+
+    .stats {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      padding: 0 42px 30px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(64,39,23,0.08);
+      border-radius: 18px;
+      padding: 22px 20px;
+      text-align: center;
+      box-shadow: 0 8px 18px rgba(64, 39, 23, 0.05);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      color: var(--brand-green-dark);
+      margin-bottom: 6px;
+      letter-spacing: -0.06em;
+    }
+
+    .stat span {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .destinations {
+      position: relative;
+      z-index: 2;
+      padding: 0 42px 42px;
+    }
+
+    .section-title {
+      margin: 0 0 18px;
+      font-size: clamp(1.5rem, 2vw, 2.2rem);
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .trip-card {
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(64,39,23,0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 22px rgba(64,39,23,0.06);
+    }
+
+    .trip-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .trip-card .info {
+      padding: 18px 18px 20px;
+    }
+
+    .trip-card .info strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1.2rem;
+    }
+
+    .trip-card .info span {
+      display: inline-block;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-ochre);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .trip-card .info p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.98rem;
+    }
+
+    .footer-banner {
+      position: relative;
+      z-index: 2;
+      margin-top: 18px;
+      padding: 28px 42px 38px;
+      background: linear-gradient(135deg, rgba(47,90,46,0.9), rgba(36,73,35,0.96));
+      color: white;
+    }
+
+    .footer-banner .inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-banner strong {
+      display: block;
+      font-size: clamp(1.6rem, 2vw, 2.4rem);
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+
+    .footer-banner span {
+      color: rgba(255,255,255,0.8);
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 900px) {
+      .poster {
+        min-height: auto;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .cards,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar,
+      .hero,
+      .stats,
+      .destinations,
+      .footer-banner {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <img src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures logo" />
+        <div class="brand-text">
+          <strong>TraveL Den Adventures</strong>
+          <span>Explore Africa. Experience the World.</span>
+        </div>
+      </div>
+      <div class="badge">Luxury & Adventure</div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="tag">Curated journeys</div>
+        <h1>Discover<br />your next<br />escape.</h1>
+        <p class="subhead">
+          Safaris, beach breaks, and unforgettable international getaways designed for travelers who want meaning, comfort, and stories worth sharing.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="packages.html">Book a trip</a>
+          <a class="btn btn-secondary" href="about.html">Why us</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Safari landscape image">
+        <div class="floating-card">
+          <div class="mini-label">Featured safari</div>
+          <strong>Masai Mara<br />Wildlife Escape</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Travel highlights">
+      <div class="stat">
+        <strong>15+</strong>
+        <span>signature trips</span>
+      </div>
+      <div class="stat">
+        <strong>4.9/5</strong>
+        <span>traveler reviews</span>
+      </div>
+      <div class="stat">
+        <strong>24/7</strong>
+        <span>trip support</span>
+      </div>
+    </section>
+
+    <section class="destinations">
+      <h2 class="section-title">Popular destinations</h2>
+      <div class="cards">
+        <article class="trip-card">
+          <img src="assets/images/kenyantrips-images/diani.jpeg" alt="Diani Beach" />
+          <div class="info">
+            <strong>Diani Beach</strong>
+            <span>Kenya</span>
+            <p>Golden sands, turquoise waters, and a relaxed tropical retreat for couples and families.</p>
+          </div>
+        </article>
+
+        <article class="trip-card">
+          <img src="assets/images/safaritrips-images/safari2.jpeg" alt="Amboseli National Park" />
+          <div class="info">
+            <strong>Amboseli</strong>
+            <span>Kenya</span>
+            <p>Iconic elephant herds, dramatic landscapes, and unforgettable game drives.</p>
+          </div>
+        </article>
+
+        <article class="trip-card">
+          <img src="assets/images/internationaltrips-images/thailand.jpeg" alt="Bangkok and Phuket" />
+          <div class="info">
+            <strong>Bangkok & Phuket</strong>
+            <span>Thailand</span>
+            <p>City excitement, island escapes, and cultural moments blended into one unforgettable journey.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="footer-banner">
+      <div class="inner">
+        <div>
+          <strong>Travel with purpose.</strong>
+          <span>Thoughtful adventures across Kenya and the world.</span>
+        </div>
+        <a class="btn btn-secondary" href="bookings.html">Plan yours</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

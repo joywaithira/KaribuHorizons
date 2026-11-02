@@ -3,17 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>International Trips — Karibu Horizons</title>
-	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/icon.png"></head>
+	<title>International Trips — TraveL Den Adventures</title>
+	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/TransparentTravelDen-Logo.png"></head>
 <body>
 <nav class="site-nav">
 	<div class="container nav-inner">
 		<div class="brand">
-			<div class="logo-mark">KH</div>
-			<div>
-				<h1>Karibu Horizons</h1>
-				<p>Bringing Africa's Heritage to Your Home</p>
-			</div>
+			<img class="site-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
+			<p>Explore Africa. Experience the World.</p>
 		</div>
 		<button class="mobile-toggle" aria-label="Menu">☰</button>
 		<div class="nav-links">
@@ -21,7 +18,6 @@
 			<a href="about.html">About</a>
 			<a href="packages.html">Packages</a>
 			<a href="blog.html">Blog</a>
-			<a href="shop.html">Shop</a>
 			<div class="dropdown">
 				<button class="dropdown-toggle">Trips ▾</button>
 				<div class="dropdown-menu">
@@ -42,46 +38,61 @@
 	</div>
 </nav>
 
-<main class="container">
+<main class="container" data-trip-category="international">
 	<h2>International Destinations</h2>
 	<p class="muted">Curated trips to cities and scenic locations worldwide.</p>
 
-	<div class="cards">
+	<div class="cards" data-trip-grid>
 		<div class="card">
 			<img src="assets/images/internationaltrips-images/london.jpeg" alt="london">
 			<h3>London Highlights — City Break</h3>
-			<p class="muted">4 days • From $980 per person</p>
+			<p class="muted">4 days • From KSh 980 per person</p>
 			<p>Guided city tours including museums, historic sites and a Thames cruise. Includes accommodation, select tours and local transfers.</p>
-			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=London%20Highlights">Book Now</a><a href="trip_london.html">View details</a></div>
+			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=London%20Highlights">Book Now</a><a href="tripspages/trip_london.html">View details</a></div>
 		</div>
 		<div class="card">
 			<img src="assets/images/internationaltrips-images/greece.jpeg" alt="greece">
 			<h3>Greek Islands & Culture — Island Hopper</h3>
-			<p class="muted">7 days • From $1,650 per person</p>
+			<p class="muted">7 days • From KSh 1,650 per person</p>
 			<p>Island-hopping itinerary with local dining experiences, boat transfers and guided tours of historic sites. Includes select accommodation and transfers.</p>
-			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Greek%20Islands%20%26%20Culture">Book Now</a><a href="trip_greek-islands.html">View details</a></div>
+			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Greek%20Islands%20%26%20Culture">Book Now</a><a href="tripspages/trip_greek-islands.html">View details</a></div>
 		</div>
 		<div class="card">
 			<img src="assets/images/internationaltrips-images/thailand.jpeg" alt="thailand">
 			<h3>Thailand Explorer — Culture & Coast</h3>
-			<p class="muted">7 days • From $1,450 per person</p>
+			<p class="muted">7 days • From KSh 1,450 per person</p>
 			<p>Explore Bangkok markets and temples, then unwind on Phuket's beaches. Package includes guided city tours, transfers and selected accommodations.</p>
-			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Thailand%20Explorer">Book Now</a><a href="trip_thailand.html">View details</a></div>
+			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Thailand%20Explorer">Book Now</a><a href="tripspages/trip_thailand.html">View details</a></div>
 		</div>
 	</div>
+
+	<section class="info-section" aria-labelledby="international-planning">
+		<h2 id="international-planning">Prepare for international travel</h2>
+		<p class="info-intro">International itineraries involve destination-specific entry rules, transport connections, and local conditions. Verify current requirements for every country on your route.</p>
+		<div class="info-grid">
+			<article class="info-card"><h3>Documents &amp; entry rules</h3><p>Check passport validity, visa or electronic authorisation requirements, transit rules, and entry conditions with the relevant official authorities.</p></article>
+			<article class="info-card"><h3>Flights &amp; connections</h3><p>Ask whether international flights, airport transfers, baggage, local transport, and connection assistance are included or need separate arrangements.</p></article>
+			<article class="info-card"><h3>Budget &amp; practical details</h3><p>Confirm the quote currency, payment schedule, accommodation, meals, local taxes, activities, insurance needs, and any optional costs.</p></article>
+		</div>
+		<div class="faq-list">
+			<details><summary>When should I start planning?</summary><p>Start as early as your dates allow, especially when you need visas, flights, or multiple destinations. Processing times and availability vary, so verify official timelines before booking.</p></details>
+			<details><summary>Will you advise on visas and health requirements?</summary><p>We can help identify questions to check, but entry and health rules change. Confirm current requirements directly with official government, embassy, and health sources for your nationality and itinerary.</p></details>
+		</div>
+		<p class="info-callout"><strong>Important:</strong> Do not buy non-refundable flights or rely on a visa assumption until your trip dates, itinerary, and entry requirements have been independently confirmed.</p>
+		<p><a class="secondary" href="bookings.html">Request an international trip</a> <a href="contact.html">Discuss your itinerary</a></p>
+	</section>
 
 </main>
 <footer class="site-footer">
 	<div class="footer-inner">
 		<div>
 			<div class="footer-brand">
-				<div class="logo-mark">KH</div>
+				<img class="footer-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
 				<div>
-					<strong>Karibu Horizons</strong>
-					<div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+					<div class="footer-note">Explore Africa. Experience the World.</div>
 				</div>
 			</div>
-			<div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
+			<div class="footer-note">Email: info@traveldenadventures.com • WhatsApp: +254 711 595474</div>
 		</div>
 		<div class="footer-links">
 			<strong>International</strong>
@@ -91,14 +102,14 @@
 		<div>
 			<strong>Follow us</strong>
 			<div class="socials">
-				<a href="#">Facebook</a>
-				<a href="#">Instagram</a>
+				<a href="https://www.facebook.com/share/1HvN41fe4F/" target="_blank" rel="noopener noreferrer">Facebook</a>
+				<a href="https://instagram.com/traveldenadventures1?exln=MXFhcDhwNDlwM2N4Mw%3D%3D" target="_blank" rel="noopener noreferrer">Instagram</a>
 			</div>
-			<div class="footer-note">© Karibu Horizons. Support African artisans. Designed with care.</div>
+			<div class="footer-note">© TraveL Den Adventures. Travel responsibly. Designed with care.</div>
 		</div>
 	</div>
 </footer>
 
-<script src="assets/js/site.js"></script>
+<script src="assets/js/site.js?v=kes20260827"></script>
 </body>
 </html>

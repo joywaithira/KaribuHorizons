@@ -1,228 +1,229 @@
 document.addEventListener('click', function (e) {
+  const target = e.target instanceof Element ? e.target : null;
+  if (!target) return;
+
   // mobile menu toggle
-  if (e.target.matches('.mobile-toggle')) {
-    document.documentElement.classList.toggle('nav-open');
+  if (target.closest('.mobile-toggle')) {
+    setMobileMenu(!document.documentElement.classList.contains('nav-open'));
     return;
   }
 
-  // close drawer when clicking backdrop
-  if (e.target.matches('.cart-backdrop')) {
-    closeCartDrawer();
+  if (target.closest('.mobile-menu-close, .mobile-menu-backdrop') || target.closest('.mobile-menu-drawer a')) {
+    setMobileMenu(false);
+    return;
   }
 
   // toggle dropdowns
-  if (e.target.matches('.dropdown-toggle')) {
-    const menu = e.target.nextElementSibling;
+  const dropdownToggle = target.closest('.dropdown-toggle');
+  if (dropdownToggle) {
+    const menu = dropdownToggle.nextElementSibling;
     // toggle arrow class
-    e.target.classList.toggle('open');
+    const isOpening = menu.style.display !== 'block';
+    dropdownToggle.classList.toggle('open', isOpening);
+    dropdownToggle.setAttribute('aria-expanded', String(isOpening));
     // close others
-    document.querySelectorAll('.dropdown-menu').forEach(m => { if (m !== menu) m.style.display = 'none' });
-    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    document.querySelectorAll('.dropdown-menu').forEach(m => {
+      if (m !== menu) {
+        m.style.display = 'none';
+        m.previousElementSibling?.classList.remove('open');
+        m.previousElementSibling?.setAttribute('aria-expanded', 'false');
+      }
+    });
+    menu.style.display = isOpening ? 'block' : 'none';
     return;
   }
 
   // close any open menus when clicking outside
-  document.querySelectorAll('.dropdown-menu').forEach(m => { if (!m.contains(e.target)) m.style.display = 'none' });
+  document.querySelectorAll('.dropdown-menu').forEach(m => {
+    if (!m.contains(target)) {
+      m.style.display = 'none';
+      m.previousElementSibling?.classList.remove('open');
+      m.previousElementSibling?.setAttribute('aria-expanded', 'false');
+    }
+  });
 });
 
-/* Cart and catalog functionality */
-const CART_KEY = 'kh_cart';
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    setMobileMenu(false);
+    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+      menu.style.display = 'none';
+      menu.previousElementSibling?.classList.remove('open');
+      menu.previousElementSibling?.setAttribute('aria-expanded', 'false');
+    });
+  }
+});
 
-async function loadProducts(){
-  try {
-    const res = await fetch('assets/data/products.json');
-    const products = await res.json();
-    renderProducts(products);
-  } catch(err){ console.error('Failed to load products', err) }
+function setMobileMenu(isOpen){
+  document.documentElement.classList.toggle('nav-open', isOpen);
+  document.body.classList.toggle('menu-open', isOpen);
+  document.querySelector('.mobile-toggle')?.setAttribute('aria-expanded', String(isOpen));
 }
+
+function formatKes(amount){ return 'KSh ' + Number(amount || 0).toLocaleString('en-KE', {minimumFractionDigits: 2, maximumFractionDigits: 2}); }
 
 async function loadBlogPosts(){
   try {
-    const res = await fetch('assets/data/blog.json');
+    let res = await fetch('api/posts.php', {cache: 'no-store'});
+    if (!res.ok) res = await fetch('assets/data/blog.json');
     const posts = await res.json();
     renderBlogPosts(posts);
   } catch(err){ console.error('Failed to load blog posts', err) }
 }
 
-function renderProducts(products){
-  const grid = document.querySelector('#shop-grid');
+async function loadTrips(category){
+  try {
+    const res = await fetch(`api/trips.php?category=${encodeURIComponent(category)}`, {cache: 'no-store'});
+    if (!res.ok) throw new Error('Trip request failed');
+    renderTrips(await res.json());
+  } catch(err){ console.error('Failed to load trips', err) }
+}
+
+function renderTrips(trips){
+  const grid = document.querySelector('[data-trip-grid]');
   if(!grid) return;
-  grid.innerHTML = '';
-  products.forEach(p=>{
-    const card = document.createElement('div'); card.className='card';
-    card.innerHTML = `
-      <img src="${p.image}" alt="${p.title}">
-      <h3>${p.title}</h3>
-      <p class="muted">$${p.price.toFixed(2)}</p>
-      <p>${p.description}</p>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="primary" data-add="${p.id}">Add to cart</button>
-        <a class="secondary" href="checkout.php">Buy now</a>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-
-  // bind add buttons
-  document.querySelectorAll('[data-add]').forEach(btn=>btn.addEventListener('click',e=>{
-    addToCart(e.target.getAttribute('data-add'));
-  }));
-}
-
-function getCart(){return JSON.parse(localStorage.getItem(CART_KEY)||'[]')}
-function saveCart(c){localStorage.setItem(CART_KEY, JSON.stringify(c))}
-
-function addToCart(id){
-  const cart = getCart();
-  const item = cart.find(i=>i.id===id);
-  if(item) item.qty +=1; else cart.push({id:id,qty:1});
-  saveCart(cart);
-  showCartDrawer();
-  renderCartDrawer();
-}
-
-function setQty(id,qty){
-  const cart = getCart();
-  const item = cart.find(i=>i.id===id);
-  if(!item) return;
-  item.qty = Math.max(0,qty);
-  const newCart = cart.filter(i=>i.qty>0);
-  saveCart(newCart);
-  renderCartDrawer();
-}
-
-function removeFromCart(id){
-  let cart = getCart(); cart = cart.filter(i=>i.id!==id); saveCart(cart); renderCartDrawer();
-}
-
-function clearCart(){ localStorage.removeItem(CART_KEY); renderCartDrawer(); }
-
-function formatCurrency(x){ return '$'+x.toFixed(2) }
-
-async function renderCartDrawer(){
-  const drawer = ensureCartDrawer();
-  const itemsEl = drawer.querySelector('.cart-items');
-  itemsEl.innerHTML = '';
-  const cart = getCart();
-  if(cart.length===0){ itemsEl.innerHTML = '<div class="muted">Your cart is empty.</div>'; drawer.querySelector('.cart-total').textContent=''; return }
-  // load products to map details
-  const res = await fetch('assets/data/products.json'); const products = await res.json();
-  let subtotal=0;
-  cart.forEach(ci=>{
-    const p = products.find(pp=>pp.id===ci.id) || {title:ci.id,price:0,image:''};
-    subtotal += (p.price||0)*ci.qty;
-    const el = document.createElement('div'); el.className='cart-item';
-    el.innerHTML = `
-      <img src="${p.image}" alt="${p.title}">
-      <div style="flex:1">
-        <div><strong>${p.title}</strong></div>
-        <div class="muted">${formatCurrency(p.price||0)}</div>
-        <div class="qty-controls">
-          <button data-decr="${ci.id}">-</button>
-          <input type="number" min="0" value="${ci.qty}" data-qty="${ci.id}" style="width:56px;padding:6px;border-radius:6px;border:1px solid #eee">
-          <button data-incr="${ci.id}">+</button>
-          <button data-remove="${ci.id}" style="margin-left:auto;background:transparent;border:0;color:var(--wood-brown)">Remove</button>
-        </div>
-      </div>
-    `;
-    itemsEl.appendChild(el);
-  });
-  drawer.querySelector('.cart-total').textContent = 'Subtotal: '+formatCurrency(subtotal);
-
-  // bind controls
-  drawer.querySelectorAll('[data-incr]').forEach(b=>b.onclick=()=>{ const id=b.getAttribute('data-incr'); const cart=getCart(); const it=cart.find(x=>x.id===id); if(it){ setQty(id, it.qty+1) } });
-  drawer.querySelectorAll('[data-decr]').forEach(b=>b.onclick=()=>{ const id=b.getAttribute('data-decr'); const cart=getCart(); const it=cart.find(x=>x.id===id); if(it){ setQty(id, it.qty-1) } });
-  drawer.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{ removeFromCart(b.getAttribute('data-remove')) });
-  drawer.querySelectorAll('[data-qty]').forEach(inp=>inp.onchange=(e)=>{ setQty(e.target.getAttribute('data-qty'), parseInt(e.target.value||0,10)) });
-}
-
-function ensureCartDrawer(){
-  let drawer = document.querySelector('.cart-drawer');
-  if(drawer) return drawer;
-  drawer = document.createElement('div'); drawer.className='cart-drawer';
-  drawer.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <h3>Your Cart</h3>
-      <button onclick="closeCartDrawer()">Close</button>
-    </div>
-    <div class="cart-items muted">Loading...</div>
-    <div class="totals cart-total"></div>
-    <div style="margin-top:18px;display:flex;gap:8px">
-      <button class="primary" onclick="checkoutFromDrawer()">Checkout</button>
-      <button onclick="clearCart()">Clear</button>
-    </div>
+  const controls = document.createElement('div');
+  controls.className = 'trip-filters';
+  controls.innerHTML = `
+    <label class="trip-search-label">
+      <span>Find your next adventure</span>
+      <input type="search" class="trip-search" placeholder="Search destinations or experiences" aria-label="Search trips">
+    </label>
+    <label class="trip-sort-label">
+      <span>Sort by</span>
+      <select class="trip-sort" aria-label="Sort trips">
+        <option value="featured">Featured</option>
+        <option value="price-asc">Price: low to high</option>
+        <option value="price-desc">Price: high to low</option>
+      </select>
+    </label>
+    <p class="trip-results" aria-live="polite"></p>
   `;
-  document.body.appendChild(drawer);
-  // backdrop
-  const backdrop = document.createElement('div'); backdrop.className='cart-backdrop'; backdrop.style.position='fixed'; backdrop.style.left='0'; backdrop.style.top='0'; backdrop.style.right='0'; backdrop.style.bottom='0'; backdrop.style.background='rgba(0,0,0,0.35)'; backdrop.style.opacity='0'; backdrop.style.transition='opacity .2s ease'; backdrop.style.zIndex='125'; document.body.appendChild(backdrop);
-  return drawer;
+  grid.before(controls);
+
+  grid.innerHTML = trips.map(trip => `
+    <article class="card">
+      ${trip.image ? `<img src="${trip.image}" alt="${trip.title}">` : ''}
+      <h3>${trip.title}</h3>
+      <p class="muted">From ${formatKes(trip.price)} per person</p>
+      <p>${trip.description}</p>
+      <div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=${encodeURIComponent(trip.title)}">Book Now</a>${trip.detail_link ? `<a href="${trip.detail_link}">View details</a>` : ''}</div>
+    </article>`).join('');
+
+  const search = controls.querySelector('.trip-search');
+  const sort = controls.querySelector('.trip-sort');
+  const results = controls.querySelector('.trip-results');
+  Array.from(grid.querySelectorAll('.card')).forEach((card, index) => {
+    card.dataset.price = String(Number(trips[index]?.price || 0));
+    card.dataset.featuredIndex = String(index);
+  });
+  const updateTrips = () => {
+    const query = search.value.trim().toLowerCase();
+    const cards = Array.from(grid.querySelectorAll('.card'));
+    cards.sort((a, b) => {
+      if (sort.value === 'featured') return Number(a.dataset.featuredIndex) - Number(b.dataset.featuredIndex);
+      const priceA = Number(a.dataset.price || 0);
+      const priceB = Number(b.dataset.price || 0);
+      return sort.value === 'price-asc' ? priceA - priceB : priceB - priceA;
+    });
+    let visible = 0;
+    cards.forEach(card => {
+      const matches = card.textContent.toLowerCase().includes(query);
+      card.hidden = !matches;
+      if (matches) visible++;
+      grid.appendChild(card);
+    });
+    results.textContent = `${visible} ${visible === 1 ? 'trip' : 'trips'} found`;
+  };
+  search.addEventListener('input', updateTrips);
+  sort.addEventListener('change', updateTrips);
+  updateTrips();
 }
 
-function showCartDrawer(){
-  const drawer = ensureCartDrawer();
-  drawer.classList.add('open');
-  const backdrop = document.querySelector('.cart-backdrop'); backdrop.style.opacity='1'; backdrop.style.pointerEvents='auto';
-}
+const countryCallingCodes = `
+Afghanistan|93,Albania|355,Algeria|213,American Samoa|1684,Andorra|376,Angola|244,Anguilla|1264,Antigua and Barbuda|1268,Argentina|54,Armenia|374,Aruba|297,Australia|61,Austria|43,Azerbaijan|994,Bahamas|1242,Bahrain|973,Bangladesh|880,Barbados|1246,Belarus|375,Belgium|32,Belize|501,Benin|229,Bermuda|1441,Bhutan|975,Bolivia|591,Bosnia and Herzegovina|387,Botswana|267,Brazil|55,British Virgin Islands|1284,Brunei|673,Bulgaria|359,Burkina Faso|226,Burundi|257,Cambodia|855,Cameroon|237,Canada|1,Cape Verde|238,Cayman Islands|1345,Central African Republic|236,Chad|235,Chile|56,China|86,Colombia|57,Comoros|269,Congo|242,Congo (DRC)|243,Cook Islands|682,Costa Rica|506,Croatia|385,Cuba|53,Curaçao|599,Cyprus|357,Czechia|420,Denmark|45,Djibouti|253,Dominica|1767,Dominican Republic|1809,Ecuador|593,Egypt|20,El Salvador|503,Equatorial Guinea|240,Eritrea|291,Estonia|372,Eswatini|268,Ethiopia|251,Falkland Islands|500,Faroe Islands|298,Fiji|679,Finland|358,France|33,French Guiana|594,French Polynesia|689,Gabon|241,Gambia|220,Georgia|995,Germany|49,Ghana|233,Gibraltar|350,Greece|30,Greenland|299,Grenada|1473,Guadeloupe|590,Guam|1671,Guatemala|502,Guernsey|441481,Guinea|224,Guinea-Bissau|245,Guyana|592,Haiti|509,Honduras|504,Hong Kong|852,Hungary|36,Iceland|354,India|91,Indonesia|62,Iran|98,Iraq|964,Ireland|353,Isle of Man|441624,Israel|972,Italy|39,Ivory Coast|225,Jamaica|1876,Japan|81,Jersey|441534,Jordan|962,Kazakhstan|7,Kenya|254,Kiribati|686,Kosovo|383,Kuwait|965,Kyrgyzstan|996,Laos|856,Latvia|371,Lebanon|961,Lesotho|266,Liberia|231,Libya|218,Liechtenstein|423,Lithuania|370,Luxembourg|352,Macao|853,Madagascar|261,Malawi|265,Malaysia|60,Maldives|960,Mali|223,Malta|356,Marshall Islands|692,Martinique|596,Mauritania|222,Mauritius|230,Mayotte|262,Mexico|52,Micronesia|691,Moldova|373,Monaco|377,Mongolia|976,Montenegro|382,Montserrat|1664,Morocco|212,Mozambique|258,Myanmar|95,Namibia|264,Nauru|674,Nepal|977,Netherlands|31,New Caledonia|687,New Zealand|64,Nicaragua|505,Niger|227,Nigeria|234,Niue|683,North Korea|850,North Macedonia|389,Northern Mariana Islands|1670,Norway|47,Oman|968,Pakistan|92,Palau|680,Palestine|970,Panama|507,Papua New Guinea|675,Paraguay|595,Peru|51,Philippines|63,Poland|48,Portugal|351,Puerto Rico|1787,Qatar|974,Reunion|262,Romania|40,Russia|7,Rwanda|250,Saint Barthelemy|590,Saint Helena|290,Saint Kitts and Nevis|1869,Saint Lucia|1758,Saint Martin|590,Saint Pierre and Miquelon|508,Saint Vincent and the Grenadines|1784,Samoa|685,San Marino|378,Sao Tome and Principe|239,Saudi Arabia|966,Senegal|221,Serbia|381,Seychelles|248,Sierra Leone|232,Singapore|65,Sint Maarten|1721,Slovakia|421,Slovenia|386,Solomon Islands|677,Somalia|252,South Africa|27,South Korea|82,South Sudan|211,Spain|34,Sri Lanka|94,Sudan|249,Suriname|597,Sweden|46,Switzerland|41,Syria|963,Taiwan|886,Tajikistan|992,Tanzania|255,Thailand|66,Timor-Leste|670,Togo|228,Tokelau|690,Tonga|676,Trinidad and Tobago|1868,Tunisia|216,Turkey|90,Turkmenistan|993,Turks and Caicos Islands|1649,Tuvalu|688,Uganda|256,Ukraine|380,United Arab Emirates|971,United Kingdom|44,United States|1,Uruguay|598,Uzbekistan|998,Vanuatu|678,Vatican City|379,Venezuela|58,Vietnam|84,Wallis and Futuna|681,Yemen|967,Zambia|260,Zimbabwe|263
+`.trim().split(',').map(entry => {
+  const [name, code] = entry.split('|');
+  return {name, code};
+});
 
-function closeCartDrawer(){
-  const drawer = document.querySelector('.cart-drawer'); if(drawer) drawer.classList.remove('open');
-  const backdrop = document.querySelector('.cart-backdrop'); if(backdrop) { backdrop.style.opacity='0'; backdrop.style.pointerEvents='none' }
+function initCountryCallingCodes(){
+  document.querySelectorAll('select.country-code').forEach(select => {
+    if (select.options.length) return;
+    countryCallingCodes.forEach(country => {
+      const option = document.createElement('option');
+      option.value = `+${country.code}`;
+      option.textContent = `${country.name} (+${country.code})`;
+      option.selected = country.name === 'Kenya';
+      select.appendChild(option);
+    });
+  });
 }
-
-async function checkoutFromDrawer(){
-  const cart = getCart();
-  if(!cart || cart.length===0){ alert('Your cart is empty'); return }
-  try{
-    const res = await fetch('api/checkout.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cart})});
-    const data = await res.json();
-    if(!res.ok){ alert(data.error||'Checkout failed'); return }
-    const total = data.total;
-    const ok = confirm('Your total is '+formatCurrency(total)+". Proceed to pay now?");
-    if(!ok) return;
-    // simulate payment confirmation (in real app redirect to payment provider)
-    const payRes = await fetch('api/confirm_payment.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:'order_id='+encodeURIComponent(data.order_id)+'&method=card'});
-    const payData = await payRes.json();
-    if(!payRes.ok){ alert(payData.error||'Payment failed'); return }
-    // show receipt
-    showReceipt(payData);
-    clearCart();
-    closeCartDrawer();
-  } catch(err){ console.error(err); alert('Checkout error') }
-}
-
-function showReceipt(payData){
-  const modal = document.createElement('div'); modal.className='receipt-modal';
-  modal.style.position='fixed'; modal.style.left='0'; modal.style.top='0'; modal.style.right='0'; modal.style.bottom='0'; modal.style.background='rgba(0,0,0,0.6)'; modal.style.display='flex'; modal.style.alignItems='center'; modal.style.justifyContent='center'; modal.style.zIndex='9999';
-  const box = document.createElement('div'); box.style.background='#fff'; box.style.padding='20px'; box.style.borderRadius='10px'; box.style.maxWidth='720px'; box.style.width='90%'; box.style.maxHeight='80%'; box.style.overflow='auto';
-  const order = payData.order || payData.order_id ? payData.order : null;
-  box.innerHTML = `<h3>Receipt — Order ${order?order.id:payData.order_id}</h3>`;
-  const items = payData.items || [];
-  const list = document.createElement('div'); list.style.marginTop='12px';
-  items.forEach(it=>{ const row = document.createElement('div'); row.textContent = `${it.qty} x ${it.product_id} @ ${formatCurrency(parseFloat(it.price))}`; list.appendChild(row); });
-  const total = order?order.total:payData.total;
-  const tot = document.createElement('div'); tot.style.marginTop='12px'; tot.style.fontWeight='700'; tot.textContent = 'Total: '+formatCurrency(parseFloat(total || 0));
-  const close = document.createElement('button'); close.className='primary'; close.textContent='Close'; close.style.marginTop='14px'; close.onclick=()=>{ document.body.removeChild(modal) };
-  box.appendChild(list); box.appendChild(tot); box.appendChild(close);
-  modal.appendChild(box); document.body.appendChild(modal);
-}
-
-// expose for console / inline buttons
-window.addToCart = addToCart; window.viewCart = showCartDrawer; window.clearCart = clearCart; window.removeFromCart = removeFromCart;
 
 // initialize page-specific content after the DOM is ready
 document.addEventListener('DOMContentLoaded', ()=>{
-  if (document.body.dataset.page === 'shop') {
-    loadProducts();
-  }
-
+  initCountryCallingCodes();
   if (document.body.dataset.page === 'blog') {
     loadBlogPosts();
   }
 
-  renderCartDrawer();
+  const tripPage = document.querySelector('[data-trip-category]');
+  if (tripPage) loadTrips(tripPage.dataset.tripCategory);
+
   initSlideshows();
   ensureMobileMenu();
+  initActiveNavigation();
+  initScrollInteractions();
 });
+
+function initActiveNavigation(){
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.nav-links a, .mobile-menu-drawer a').forEach(link => {
+    const linkPage = new URL(link.href, window.location.href).pathname.split('/').pop();
+    if (linkPage === currentPage) link.setAttribute('aria-current', 'page');
+  });
+}
+
+function initScrollInteractions(){
+  const progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(progress);
+
+  const topButton = document.createElement('button');
+  topButton.className = 'back-to-top';
+  topButton.type = 'button';
+  topButton.setAttribute('aria-label', 'Back to top');
+  topButton.textContent = '↑';
+  topButton.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+  document.body.appendChild(topButton);
+
+  const updateScroll = () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const percent = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+    progress.style.transform = `scaleX(${percent / 100})`;
+    topButton.classList.toggle('visible', window.scrollY > 480);
+  };
+  window.addEventListener('scroll', updateScroll, {passive: true});
+  updateScroll();
+
+  const revealItems = document.querySelectorAll('main h2, main > h3, main .card, main .about-card, main .testimonial');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.08, rootMargin: '0px 0px -24px 0px'});
+    revealItems.forEach((item, index) => {
+      item.classList.add('reveal-on-scroll');
+      item.style.setProperty('--reveal-delay', `${Math.min(index % 4, 3) * 65}ms`);
+      observer.observe(item);
+    });
+  }
+}
 
 // mobile drawer creation
 
@@ -255,20 +256,26 @@ function initSlideshows(){
 
 function ensureMobileMenu(){
   if(document.querySelector('.mobile-menu-drawer')) return;
+    const rootPrefix = window.location.pathname.includes('/tripspages/') ? '../' : '';
   const d = document.createElement('nav'); d.className='mobile-menu-drawer';
   d.innerHTML = `
-    <div class="close"><button onclick="document.documentElement.classList.remove('nav-open')">Close ✕</button></div>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="packages.html">Packages</a>
-    <a href="safaritours.html">Safari Trips</a>
-    <a href="kenyantrips.html">Kenyan Trips</a>
-    <a href="internationaltrips.html">International Trips</a>
-    <a href="blog.html">Blog</a>
-    <a href="shop.html">Shop</a>
-    <a href="contact.html">Contact</a>
+    <div class="mobile-menu-heading"><strong>Explore</strong><button class="mobile-menu-close" type="button" aria-label="Close menu">✕</button></div>
+      <a href="${rootPrefix}index.html">Home</a>
+      <a href="${rootPrefix}about.html">About</a>
+      <a href="${rootPrefix}packages.html">Packages</a>
+      <a href="${rootPrefix}safaritours.html">Safari Trips</a>
+      <a href="${rootPrefix}kenyantrips.html">Kenyan Trips</a>
+      <a href="${rootPrefix}internationaltrips.html">International Trips</a>
+      <a href="${rootPrefix}blog.html">Blog</a>
+      <a href="${rootPrefix}contact.html">Contact</a>
+      <a href="${rootPrefix}terms.html">Terms</a>
   `;
   document.body.appendChild(d);
+  const backdrop = document.createElement('button');
+  backdrop.className = 'mobile-menu-backdrop';
+  backdrop.type = 'button';
+  backdrop.setAttribute('aria-label', 'Close menu');
+  document.body.appendChild(backdrop);
 }
 
 function renderBlogPosts(posts){

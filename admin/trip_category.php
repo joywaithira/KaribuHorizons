@@ -1,0 +1,12 @@
+<?php
+require __DIR__ . '/_auth.php';
+$category = $adminTripCategory;
+$labels = ['safari'=>'Safari', 'kenyan'=>'Kenyan', 'international'=>'International', 'package'=>'Package'];
+$pdo->exec("CREATE TABLE IF NOT EXISTS trips (id VARCHAR(64) PRIMARY KEY, title VARCHAR(255) NOT NULL, category VARCHAR(32) NOT NULL DEFAULT 'kenyan', price DECIMAL(10,2) NOT NULL DEFAULT 0.00, image VARCHAR(255), description TEXT, detail_link VARCHAR(255))");
+foreach (["ALTER TABLE trips ADD COLUMN IF NOT EXISTS category VARCHAR(32) NOT NULL DEFAULT 'kenyan'", "ALTER TABLE trips ADD COLUMN IF NOT EXISTS image VARCHAR(255) NULL", "ALTER TABLE trips ADD COLUMN IF NOT EXISTS detail_link VARCHAR(255) NULL"] as $migration) { try { $pdo->exec($migration); } catch (Exception $e) {} }
+$stmt = $pdo->prepare('SELECT id,title,price,image,description,detail_link FROM trips WHERE category=? ORDER BY title'); $stmt->execute([$category]); $trips = $stmt->fetchAll();
+$page = basename($_SERVER['SCRIPT_NAME']);
+?>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><?php echo $labels[$category]; ?> Trips — Admin</title><link rel="stylesheet" href="/assets/css/site.css"></head><body>
+<nav class="site-nav"><div class="container nav-inner"><div class="brand"><img class="site-logo" src="/assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures"><div><h1>Admin</h1></div></div><div style="margin-left:auto"><a href="index.php">Dashboard</a> | <a href="logout.php">Logout</a></div></div></nav>
+<main class="container" style="margin-top:20px"><p><a href="index.php">&larr; Dashboard</a></p><h2><?php echo $labels[$category]; ?> Trips <a href="trip_edit.php?category=<?php echo $category; ?>" style="float:right" class="cta">Add Trip</a></h2><div class="card"><table style="width:100%;border-collapse:collapse"><thead><tr><th>Image</th><th>Title</th><th>Price</th><th>Detail page</th><th></th></tr></thead><tbody><?php foreach ($trips as $trip): ?><tr><td><?php if ($trip['image']): ?><img src="../<?php echo htmlspecialchars($trip['image']); ?>" alt="" style="height:44px;width:64px;object-fit:cover"><?php endif; ?></td><td><?php echo htmlspecialchars($trip['title']); ?></td><td><?php echo htmlspecialchars($trip['price']); ?></td><td><?php echo htmlspecialchars($trip['detail_link'] ?? ''); ?></td><td><a href="trip_edit.php?id=<?php echo urlencode($trip['id']); ?>&category=<?php echo $category; ?>">Edit</a></td></tr><?php endforeach; ?></tbody></table></div></main></body></html>

@@ -35,50 +35,68 @@ require_once __DIR__ . '/../includes/dbh.inc.php';
 $name = trim($_POST['name'] ?? '');
 $email = trim($_POST['email'] ?? '');
 $phone = trim($_POST['phone'] ?? '');
+$phoneCountryCode = trim($_POST['phone_country_code'] ?? '');
 $trip = trim($_POST['trip'] ?? '');
-$start_date = trim($_POST['start_date'] ?? null);
+$start_date = trim($_POST['start_date'] ?? '');
+$checkout_date = trim($_POST['checkout_date'] ?? '');
 $travellers = intval($_POST['travellers'] ?? 1);
+$travelerTypes = $_POST['traveler_types'] ?? [];
+$travelerAges = $_POST['traveler_ages'] ?? [];
 $notes = trim($_POST['notes'] ?? '');
 
 // ensure trips table exists (simple migration)
 $pdo->exec("CREATE TABLE IF NOT EXISTS trips (
     id VARCHAR(64) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
+    category VARCHAR(32) NOT NULL DEFAULT 'kenyan',
     price DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    description TEXT
+    image VARCHAR(255),
+    description TEXT,
+    detail_link VARCHAR(255)
 )");
+foreach (["ALTER TABLE trips ADD COLUMN IF NOT EXISTS category VARCHAR(32) NOT NULL DEFAULT 'kenyan'", "ALTER TABLE trips ADD COLUMN IF NOT EXISTS image VARCHAR(255) NULL", "ALTER TABLE trips ADD COLUMN IF NOT EXISTS detail_link VARCHAR(255) NULL"] as $migration) {
+    try { $pdo->exec($migration); } catch (Exception $e) {}
+}
 
 // Upsert some known trips if missing (id,title,price)
 $known = [
-    ['masai-mara','Masai Mara Reserve — Classic Safari',1250.00],
-    ['amboseli','Amboseli National Park — Elephant & Mountain Views',890.00],
-    ['tsavo-coastal','Tsavo & Coastal Safaris — Wilderness & Shore',1100.00],
-    ['diani','Diani Beach — Coastal Relaxation',420.00],
-    ['mount-kenya','Mount Kenya Excursion — Highland Trek',620.00],
-    ['thompson-falls','Thompson Falls & Waterways — Scenic Day Trip',120.00],
-    ['london','London Highlights — City Break',980.00],
-    ['greek-islands','Greek Islands & Culture — Island Hopper',1650.00],
-    ['thailand','Thailand Explorer — Culture & Coast',1450.00]
+    ['masai-mara','Masai Mara Reserve — Classic Safari','safari',1250.00,'assets/images/safaritrips-images/safari1.jpeg','tripspages/trip_masai-mara.html'],
+    ['amboseli','Amboseli National Park — Elephant & Mountain Views','safari',890.00,'assets/images/safaritrips-images/safari2.jpeg','tripspages/trip_amboseli.html'],
+    ['tsavo-coastal','Tsavo & Coastal Safaris — Wilderness & Shore','safari',1100.00,'assets/images/safaritrips-images/safari3.jpeg','tripspages/trip_tsavo-coastal.html'],
+    ['diani','Diani Beach — Coastal Relaxation','kenyan',420.00,'assets/images/kenyantrips-images/diani.jpeg','tripspages/trip_diani.html'],
+    ['mount-kenya','Mount Kenya Excursion — Highland Trek','kenyan',620.00,'assets/images/kenyantrips-images/mountkenya.jpeg','tripspages/trip_mount-kenya.html'],
+    ['thompson-falls','Thompson Falls & Waterways — Scenic Day Trip','kenyan',120.00,'assets/images/kenyantrips-images/thompsonfalls.jpeg','tripspages/trip_thompson-falls.html'],
+    ['london','London Highlights — City Break','international',980.00,'assets/images/internationaltrips-images/london.jpeg','tripspages/trip_london.html'],
+    ['greek-islands','Greek Islands & Culture — Island Hopper','international',1650.00,'assets/images/internationaltrips-images/greece.jpeg','tripspages/trip_greek-islands.html'],
+    ['thailand','Thailand Explorer — Culture & Coast','international',1450.00,'assets/images/internationaltrips-images/thailand.jpeg','tripspages/trip_thailand.html']
 ];
 foreach($known as $k){
-    $stmt = $pdo->prepare('INSERT INTO trips (id,title,price) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE title=VALUES(title), price=VALUES(price)');
+    $stmt = $pdo->prepare('INSERT INTO trips (id,title,category,price,image,detail_link) VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=VALUES(title), category=VALUES(category), price=VALUES(price), image=VALUES(image), detail_link=VALUES(detail_link)');
     $stmt->execute($k);
 }
 
-// Ensure bookings table has extra columns for price and dates
-try {
-    $pdo->exec("ALTER TABLE bookings ADD COLUMN IF NOT EXISTS price_per_person DECIMAL(10,2) NULL, ADD COLUMN IF NOT EXISTS total_price DECIMAL(10,2) NULL, ADD COLUMN IF NOT EXISTS start_date DATE NULL, ADD COLUMN IF NOT EXISTS travellers INT DEFAULT 1 NULL");
-} catch (Exception $e) {
-    // Some MySQL versions don't support ADD COLUMN IF NOT EXISTS with multiple adds; attempt individually
-    try { $pdo->exec("ALTER TABLE bookings ADD COLUMN price_per_person DECIMAL(10,2) NULL"); } catch(Exception$e){}
-    try { $pdo->exec("ALTER TABLE bookings ADD COLUMN total_price DECIMAL(10,2) NULL"); } catch(Exception$e){}
-    try { $pdo->exec("ALTER TABLE bookings ADD COLUMN start_date DATE NULL"); } catch(Exception$e){}
-    try { $pdo->exec("ALTER TABLE bookings ADD COLUMN travellers INT DEFAULT 1 NULL"); } catch(Exception$e){}
+// Ensure booking fields exist for databases created from an older schema.
+foreach ([
+    "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS price_per_person DECIMAL(10,2) NULL",
+    "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS total_price DECIMAL(10,2) NULL",
+    "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS start_date DATE NULL",
+    "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS checkout_date DATE NULL",
+    "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS travellers INT DEFAULT 1 NULL",
+    "ALTER TABLE bookings ADD COLUMN IF NOT EXISTS traveler_details TEXT NULL",
+] as $migration) {
+    try { $pdo->exec($migration); } catch (Exception $e) {
+        // Ignore duplicate-column errors on database versions without IF NOT EXISTS support.
+    }
 }
 
-if (!$name || !$email || !$phone || !$trip) {
+if (!$name || !$email || !$phone || !$phoneCountryCode || !$trip || !$start_date || !$checkout_date) {
     http_response_code(400);
     echo json_encode(['error'=>'Please fill required fields.']);
+    exit;
+}
+if (count(preg_split('/\s+/u', $name, -1, PREG_SPLIT_NO_EMPTY)) < 2) {
+    http_response_code(400);
+    echo json_encode(['error'=>'Please enter at least your first and last name.']);
     exit;
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -87,9 +105,53 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+$phoneCountryDigits = ltrim($phoneCountryCode, '+');
+$phoneDigits = ltrim(preg_replace('/\D+/', '', $phone), '0');
+$internationalDigits = $phoneCountryDigits . $phoneDigits;
+if (!preg_match('/^\+[1-9][0-9]{0,2}$/', $phoneCountryCode) || strlen($internationalDigits) < 8 || strlen($internationalDigits) > 15 || $phoneDigits === '') {
+    http_response_code(400);
+    echo json_encode(['error'=>'Enter a valid phone number and select its country calling code.']);
+    exit;
+}
+
+$checkInDate = DateTime::createFromFormat('!Y-m-d', $start_date);
+$checkOutDate = DateTime::createFromFormat('!Y-m-d', $checkout_date);
+if (!$checkInDate || $checkInDate->format('Y-m-d') !== $start_date || !$checkOutDate || $checkOutDate->format('Y-m-d') !== $checkout_date || $checkout_date <= $start_date) {
+    http_response_code(400);
+    echo json_encode(['error'=>'Enter valid dates. Check-out must be later than check-in.']);
+    exit;
+}
+
+$travellers = max(1, min(20, $travellers));
+if (!is_array($travelerTypes) || count($travelerTypes) !== $travellers) {
+    http_response_code(400);
+    echo json_encode(['error'=>'Please choose adult or child for every traveller.']);
+    exit;
+}
+$travelerDetails = [];
+for ($i = 0; $i < $travellers; $i++) {
+    $type = $travelerTypes[$i] ?? '';
+    if (!in_array($type, ['adult', 'child'], true)) {
+        http_response_code(400);
+        echo json_encode(['error'=>'Please choose adult or child for every traveller.']);
+        exit;
+    }
+    $age = null;
+    if ($type === 'child') {
+        $ageValue = $travelerAges[$i] ?? '';
+        if ($ageValue === '' || filter_var($ageValue, FILTER_VALIDATE_INT) === false || (int)$ageValue < 0 || (int)$ageValue > 17) {
+            http_response_code(400);
+            echo json_encode(['error'=>'Enter an age from 0 to 17 for each child.']);
+            exit;
+        }
+        $age = (int)$ageValue;
+    }
+    $travelerDetails[] = ['type' => $type, 'age' => $age];
+}
+
 $name = substr($name,0,255);
 $email = substr($email,0,255);
-$phone = substr($phone,0,50);
+$phone = substr('+' . $internationalDigits,0,50);
 
 // Find trip by title or slug
 $tripStmt = $pdo->prepare('SELECT * FROM trips WHERE title = ? OR id = ? LIMIT 1');
@@ -108,12 +170,12 @@ if (!$tripRow) {
 }
 
 $price_per_person = floatval($tripRow['price']);
-$travellers = max(1,intval($travellers));
 $total_price = $price_per_person * $travellers;
+$travelerDetailsJson = json_encode($travelerDetails, JSON_UNESCAPED_UNICODE);
 
 try {
-    $ins = $pdo->prepare('INSERT INTO bookings (name, email, phone, trip_id, details, price_per_person, total_price, start_date, travellers) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-    $ins->execute([$name,$email,$phone,$tripRow['id'],$notes,$price_per_person,$total_price, $start_date ?: null, $travellers]);
+    $ins = $pdo->prepare('INSERT INTO bookings (name, email, phone, trip_id, details, price_per_person, total_price, start_date, checkout_date, travellers, traveler_details) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+    $ins->execute([$name,$email,$phone,$tripRow['id'],$notes,$price_per_person,$total_price,$start_date,$checkout_date,$travellers,$travelerDetailsJson]);
     $_SESSION['booking_submissions'][] = $now;
     echo json_encode(['status'=>'OK','booking_id'=>$pdo->lastInsertId(),'total_price'=>$total_price]);
     exit;

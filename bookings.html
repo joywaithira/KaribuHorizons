@@ -3,17 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Bookings — Karibu Horizons</title>
-	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/icon.png"></head>
+	<title>Bookings — TraveL Den Adventures</title>
+	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/TransparentTravelDen-Logo.png"></head>
 <body>
 <nav class="site-nav">
 	<div class="container nav-inner">
 		<div class="brand">
-			<div class="logo-mark">KH</div>
-			<div>
-				<h1>Karibu Horizons</h1>
-				<p>Bringing Africa's Heritage to Your Home</p>
-			</div>
+			<img class="site-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
+			<p>Explore Africa. Experience the World.</p>
 		</div>
 		<button class="mobile-toggle" aria-label="Menu">☰</button>
 		<div class="nav-links">
@@ -21,7 +18,6 @@
 			<a href="about.html">About</a>
 			<a href="packages.html">Packages</a>
 			<a href="blog.html">Blog</a>
-			<a href="shop.html">Shop</a>
 			<div class="dropdown">
 				<button class="dropdown-toggle">Trips ▾</button>
 				<div class="dropdown-menu">
@@ -44,23 +40,108 @@
 
 <main class="container">
 	<h2>Book a Trip</h2>
+	<p class="page-lead">Use this form to request availability and a written quote. Sending the form does not confirm a reservation; the trip is confirmed only after the itinerary, price, and terms have been agreed.</p>
 	<div class="card booking-card">
-		<form action="handlers/bookings.php" method="post">
-			<div class="form-row"><input name="name" placeholder="Full name" required></div>
-			<div class="form-row"><input name="email" type="email" placeholder="Email" required></div>
-			<div class="form-row"><input name="phone" placeholder="Phone / WhatsApp" required></div>
+		<form id="booking-form" action="handlers/bookings.php" method="post">
+			<div class="form-row"><label class="field-label" for="booking-name">Full name (at least two names)</label><input id="booking-name" name="name" autocomplete="name" placeholder="First and last name" aria-label="Full name, at least two names" required minlength="3"></div>
+			<div class="form-row"><input name="email" type="email" autocomplete="email" placeholder="Email" aria-label="Email" required></div>
+			<div class="form-row"><label class="field-label" for="booking-phone">Phone / WhatsApp number</label><div class="phone-input-group"><select class="country-code" name="phone_country_code" aria-label="Country calling code" required></select><input id="booking-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Phone number" aria-label="Phone number" pattern="[0-9 ()-]{6,20}" required></div></div>
 			<div class="form-row">
-				<input id="trip-search" name="trip" type="text" list="trip-search-options" placeholder="Type a destination or package name" autocomplete="off" required>
+				<input id="trip-search" name="trip" type="text" list="trip-search-options" placeholder="Type a destination or package name" aria-label="Destination or package" autocomplete="off" required>
 				<datalist id="trip-search-options"></datalist>
 			</div>
-			<div class="form-row"><input name="start_date" type="date"></div>
-			<div class="form-row"><input name="travellers" type="number" min="1" value="1"></div>
-			<div class="form-row"><textarea name="notes" placeholder="Any special requests or notes"></textarea></div>
+			<div class="date-fields">
+				<div class="form-row"><label class="field-label" for="check-in-date">Check-in / arrival date</label><input id="check-in-date" name="start_date" type="date" aria-label="Check-in or arrival date" required></div>
+				<div class="form-row"><label class="field-label" for="check-out-date">Check-out / departure date</label><input id="check-out-date" name="checkout_date" type="date" aria-label="Check-out or departure date" required></div>
+			</div>
+			<div class="form-row field-with-help"><label class="field-label" for="travellers-count">Number of travellers</label><input id="travellers-count" name="travellers" type="number" min="1" max="20" value="1" aria-label="Number of travellers" required><span class="form-help">Add each traveller below. Select adult or child; age is required for children only.</span></div>
+			<fieldset class="traveller-fieldset"><legend>Traveller details</legend><div id="traveller-list" class="traveller-list"></div></fieldset>
+			<div class="form-row"><textarea name="notes" placeholder="Share your interests, approximate budget, preferred pace, dietary or accessibility needs, and any questions."></textarea></div>
 			<div class="form-row"><button class="primary" type="submit">Request Booking</button></div>
+			<p id="booking-status" class="form-status" role="status" aria-live="polite"></p>
 		</form>
 	</div>
+	<section class="info-section" aria-labelledby="booking-next-steps">
+		<h2 id="booking-next-steps">What happens after you send a request?</h2>
+		<div class="info-grid">
+			<article class="info-card"><h3>1. We review your details</h3><p>We use your trip choice, dates, group size, and notes to understand the itinerary you are asking about.</p></article>
+			<article class="info-card"><h3>2. Confirm the proposal</h3><p>Review availability, route, accommodation, inclusions, exclusions, final total, payment schedule, and cancellation terms.</p></article>
+			<article class="info-card"><h3>3. Secure arrangements</h3><p>Only proceed with payments or non-refundable arrangements after you have received and accepted the written confirmation and terms.</p></article>
+		</div>
+		<p class="info-callout"><strong>Need help deciding?</strong> Use the notes field to describe your priorities, or <a href="contact.html">send us a question</a> before requesting a specific trip.</p>
+	</section>
 
 	<script>
+	const bookingForm = document.getElementById('booking-form');
+	const bookingStatus = document.getElementById('booking-status');
+	const travellerCount = document.getElementById('travellers-count');
+	const travellerList = document.getElementById('traveller-list');
+	const checkIn = document.getElementById('check-in-date');
+	const checkOut = document.getElementById('check-out-date');
+	function renderTravellers() {
+		const count = Math.min(20, Math.max(1, Number(travellerCount.value) || 1));
+		travellerList.innerHTML = Array.from({length: count}, (_, index) => `
+			<div class="traveller-item">
+				<strong>Traveller ${index + 1}</strong>
+				<label for="traveller-type-${index}">Traveller type</label>
+				<select id="traveller-type-${index}" name="traveler_types[${index}]" required>
+					<option value="adult">Adult</option><option value="child">Child</option>
+				</select>
+				<div class="child-age-field" hidden>
+					<label for="traveller-age-${index}">Child age</label>
+					<input id="traveller-age-${index}" name="traveler_ages[${index}]" type="number" min="0" max="17" inputmode="numeric" placeholder="Age (0–17)">
+				</div>
+			</div>`).join('');
+		travellerList.querySelectorAll('.traveller-item').forEach(item => {
+			const type = item.querySelector('select');
+			const ageField = item.querySelector('.child-age-field');
+			const ageInput = ageField.querySelector('input');
+			const updateAge = () => {
+				const isChild = type.value === 'child';
+				ageField.hidden = !isChild;
+				ageInput.required = isChild;
+				ageInput.disabled = !isChild;
+				if (!isChild) ageInput.value = '';
+			};
+			type.addEventListener('change', updateAge);
+			updateAge();
+		});
+	}
+	travellerCount.addEventListener('input', renderTravellers);
+	renderTravellers();
+	checkIn.addEventListener('change', () => { checkOut.min = checkIn.value; });
+	bookingForm.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		if (checkOut.value <= checkIn.value) {
+			bookingStatus.dataset.state = 'error';
+			bookingStatus.textContent = 'Check-out must be later than check-in.';
+			checkOut.focus();
+			return;
+		}
+		if (bookingForm.reportValidity() === false) return;
+		const submitButton = bookingForm.querySelector('button[type="submit"]');
+		submitButton.disabled = true;
+		bookingStatus.dataset.state = 'pending';
+		bookingStatus.textContent = 'Sending your request…';
+		try {
+			const response = await fetch(bookingForm.action, { method: 'POST', body: new FormData(bookingForm) });
+			const responseText = await response.text();
+			let result = {};
+			try { result = JSON.parse(responseText); } catch {}
+			if (!response.ok || result.status !== 'OK') {
+				const serverMessage = result.error || responseText.trim();
+				throw new Error(serverMessage || `The booking server returned an empty response (HTTP ${response.status}). Please refresh and try again.`);
+			}
+			bookingStatus.dataset.state = 'success';
+			bookingStatus.textContent = 'Your request was received. This is not a confirmed booking; we will follow up to confirm availability, the final itinerary, price, and terms.';
+		} catch (error) {
+			bookingStatus.dataset.state = 'error';
+			bookingStatus.textContent = error.message || 'We could not send your request. Please try again or contact us.';
+		} finally {
+			submitButton.disabled = false;
+		}
+	});
+
 	(function(){
 		const destinationOptions = [
 			'Masai Mara Reserve — Classic Safari',
@@ -100,6 +181,10 @@
 			const match = destinationOptions.find(option => option.toLowerCase().includes(decodeURIComponent(trip).toLowerCase()));
 			if(match) searchInput.value = match;
 		}
+		const startDate = params.get('start_date');
+		const checkoutDate = params.get('checkout_date');
+		if (startDate) checkIn.value = startDate;
+		if (checkoutDate) checkOut.value = checkoutDate;
 	})();
 	</script>
 </main>
@@ -108,13 +193,12 @@
 	<div class="footer-inner">
 		<div>
 			<div class="footer-brand">
-				<div class="logo-mark">KH</div>
+				<img class="footer-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
 				<div>
-					<strong>Karibu Horizons</strong>
-					<div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+					<div class="footer-note">Explore Africa. Experience the World.</div>
 				</div>
 			</div>
-			<div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
+			<div class="footer-note">Email: info@traveldenadventures.com • WhatsApp: +254 711 595474</div>
 		</div>
 		<div class="footer-links">
 			<strong>Bookings</strong>
@@ -124,10 +208,10 @@
 		<div>
 			<strong>Follow us</strong>
 			<div class="socials">
-				<a href="#">Facebook</a>
-				<a href="#">Instagram</a>
+				<a href="https://www.facebook.com/share/1HvN41fe4F/" target="_blank" rel="noopener noreferrer">Facebook</a>
+				<a href="https://instagram.com/traveldenadventures1?exln=MXFhcDhwNDlwM2N4Mw%3D%3D" target="_blank" rel="noopener noreferrer">Instagram</a>
 			</div>
-			<div class="footer-note">© Karibu Horizons. Support African artisans. Designed with care.</div>
+			<div class="footer-note">© TraveL Den Adventures. Travel responsibly. Designed with care.</div>
 		</div>
 	</div>
 </footer>

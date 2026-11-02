@@ -3,17 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Safari Trips — Karibu Horizons</title>
-	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/icon.png"></head>
+	<title>Safari Trips — TraveL Den Adventures</title>
+	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/TransparentTravelDen-Logo.png"></head>
 <body>
 <nav class="site-nav">
 	<div class="container nav-inner">
 		<div class="brand">
-			<div class="logo-mark">KH</div>
-			<div>
-				<h1>Karibu Horizons</h1>
-				<p>Bringing Africa's Heritage to Your Home</p>
-			</div>
+			<img class="site-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
+			<p>Explore Africa. Experience the World.</p>
 		</div>
 		<button class="mobile-toggle" aria-label="Menu">☰</button>
 		<div class="nav-links">
@@ -21,7 +18,6 @@
 			<a href="about.html">About</a>
 			<a href="packages.html">Packages</a>
 			<a href="blog.html">Blog</a>
-			<a href="shop.html">Shop</a>
 			<div class="dropdown">
 				<button class="dropdown-toggle">Trips ▾</button>
 				<div class="dropdown-menu">
@@ -42,33 +38,45 @@
 	</div>
 </nav>
 
-<main class="container">
+<main class="container" data-trip-category="safari">
 	<h2>Safari Destinations</h2>
 	<p class="muted">Choose from a range of safari experiences, from classic big-five sightings to intimate photographic safaris.</p>
 
-	<div class="cards">
+	<div class="cards" data-trip-grid>
 		<div class="card">
 			<img src="assets/images/safaritrips-images/safari1.jpeg" alt="safari1">
 			<h3>Masai Mara Reserve — Classic Safari</h3>
-			<p class="muted">4 days • From $1,250 per person</p>
+			<p class="muted">4 days • From KSh 1,250 per person</p>
 			<p>Witness the Great Migration (seasonal), enjoy early-morning game drives, and stay in comfortable tented camps. Includes park fees, accommodation (shared), two daily game drives, and transfers from Nairobi.</p>
-			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Masai%20Mara%20Reserve">Book Now</a><a href="trip_masai-mara.html">View details</a></div>
+			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Masai%20Mara%20Reserve">Book Now</a><a href="tripspages/trip_masai-mara.html">View details</a></div>
 		</div>
 		<div class="card">
 			<img src="assets/images/safaritrips-images/safari2.jpeg" alt="safari2">
 			<h3>Amboseli National Park — Elephant & Mountain Views</h3>
-			<p class="muted">3 days • From $890 per person</p>
+			<p class="muted">3 days • From KSh 890 per person</p>
 			<p>Explore Amboseli's open plains with expert guides, incredible elephant populations, and views of Mount Kilimanjaro. Includes accommodation, park entry and two game drives.</p>
-			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Amboseli%20National%20Park">Book Now</a><a href="trip_amboseli.html">View details</a></div>
+			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Amboseli%20National%20Park">Book Now</a><a href="tripspages/trip_amboseli.html">View details</a></div>
 		</div>
 		<div class="card">
 			<img src="assets/images/safaritrips-images/safari3.jpeg" alt="safari3">
 			<h3>Tsavo & Coastal Safaris — Wilderness & Shore</h3>
-			<p class="muted">5 days • From $1,100 per person</p>
+			<p class="muted">5 days • From KSh 1,100 per person</p>
 			<p>Combine wildlife viewing in Tsavo with a relaxing stay on the Kenyan coast. Includes transfers, accommodation and guided activities as noted in the package details.</p>
-			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Tsavo%20%26%20Coastal%20Safaris">Book Now</a><a href="trip_tsavo-coastal.html">View details</a></div>
+			<div style="display:flex;gap:8px;margin-top:10px"><a class="secondary" href="bookings.html?trip=Tsavo%20%26%20Coastal%20Safaris">Book Now</a><a href="tripspages/trip_tsavo-coastal.html">View details</a></div>
 		</div>
 	</div>
+
+	<section class="info-section" aria-labelledby="safari-planning">
+		<h2 id="safari-planning">Planning a safari</h2>
+		<p class="info-intro">Safari pace, wildlife sightings, road conditions, and park conditions can vary. Use these notes to prepare, then confirm the details for your exact itinerary.</p>
+		<div class="info-grid">
+			<article class="info-card"><h3>What to pack</h3><p>Choose comfortable layers, sun protection, closed walking shoes, personal medication, and a camera or binoculars if useful. Check luggage limits and weather guidance with us.</p></article>
+			<article class="info-card"><h3>Wildlife &amp; conservation</h3><p>Wildlife is not guaranteed. Follow your guide's safety instructions, keep a respectful distance, and never feed or approach wild animals.</p></article>
+			<article class="info-card"><h3>Before you confirm</h3><p>Ask about park fees, game-drive schedule, vehicle type, accommodation, meals, transfers, child arrangements, and any items not included in the quote.</p></article>
+		</div>
+		<p class="info-callout"><strong>Seasonality:</strong> Weather and wildlife patterns vary by location and year. Ask which travel window best matches your priorities; sightings cannot be guaranteed.</p>
+		<p><a class="secondary" href="bookings.html">Request a safari</a> <a href="contact.html">Ask a safari question</a></p>
+	</section>
 
 	<h3>Safari Tips & Conservation</h3>
 	<div class="cards">
@@ -89,13 +97,12 @@
 	<div class="footer-inner">
 		<div>
 			<div class="footer-brand">
-				<div class="logo-mark">KH</div>
+				<img class="footer-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
 				<div>
-					<strong>Karibu Horizons</strong>
-					<div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+					<div class="footer-note">Explore Africa. Experience the World.</div>
 				</div>
 			</div>
-			<div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
+			<div class="footer-note">Email: info@traveldenadventures.com • WhatsApp: +254 711 595474</div>
 		</div>
 		<div class="footer-links">
 			<strong>Trips</strong>
@@ -106,16 +113,14 @@
 		<div>
 			<strong>Follow us</strong>
 			<div class="socials">
-				<a href="#">Facebook</a>
-				<a href="#">Instagram</a>
-				<a href="#">Twitter</a>
-				<a href="#">YouTube</a>
+				<a href="https://www.facebook.com/share/1HvN41fe4F/" target="_blank" rel="noopener noreferrer">Facebook</a>
+				<a href="https://instagram.com/traveldenadventures1?exln=MXFhcDhwNDlwM2N4Mw%3D%3D" target="_blank" rel="noopener noreferrer">Instagram</a>
 			</div>
-			<div class="footer-note">© Karibu Horizons. Support African artisans. Designed with care.</div>
+			<div class="footer-note">© TraveL Den Adventures. Travel responsibly. Designed with care.</div>
 		</div>
 	</div>
 </footer>
 
-<script src="assets/js/site.js"></script>
+<script src="assets/js/site.js?v=kes20260827"></script>
 </body>
 </html>

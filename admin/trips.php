@@ -1,0 +1,11 @@
+<?php
+require __DIR__ . '/_auth.php';
+$pdo->exec("CREATE TABLE IF NOT EXISTS trips (id VARCHAR(64) PRIMARY KEY, title VARCHAR(255) NOT NULL, price DECIMAL(10,2) NOT NULL DEFAULT 0.00, description TEXT)");
+$known = [['masai-mara','Masai Mara Reserve — Classic Safari',1250.00],['amboseli','Amboseli National Park — Elephant & Mountain Views',890.00],['tsavo-coastal','Tsavo & Coastal Safaris — Wilderness & Shore',1100.00],['diani','Diani Beach — Coastal Relaxation',420.00],['mount-kenya','Mount Kenya Excursion — Highland Trek',620.00],['thompson-falls','Thompson Falls & Waterways — Scenic Day Trip',120.00],['london','London Highlights — City Break',980.00],['greek-islands','Greek Islands & Culture — Island Hopper',1650.00],['thailand','Thailand Explorer — Culture & Coast',1450.00]];
+$stmt = $pdo->prepare('INSERT INTO trips (id, title, price) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE title=VALUES(title), price=VALUES(price)');
+foreach ($known as $trip) $stmt->execute($trip);
+$trips = $pdo->query('SELECT id, title, price, description FROM trips ORDER BY title')->fetchAll();
+?>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trips — Admin</title><link rel="stylesheet" href="/assets/css/site.css"></head><body>
+<nav class="site-nav"><div class="container nav-inner"><div class="brand"><img class="site-logo" src="/assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures"><div><h1>Admin</h1></div></div><div style="margin-left:auto"><a href="index.php">Dashboard</a> | <a href="logout.php">Logout</a></div></div></nav>
+<main class="container" style="margin-top:20px"><p><a href="index.php">&larr; Dashboard</a></p><h2>Trips &amp; Packages</h2><div class="card"><table style="width:100%;border-collapse:collapse"><thead><tr><th>ID</th><th>Trip</th><th>Price</th><th>Description</th></tr></thead><tbody><?php foreach ($trips as $trip): ?><tr><td><?php echo htmlspecialchars($trip['id']) ?></td><td><?php echo htmlspecialchars($trip['title']) ?></td><td><?php echo htmlspecialchars($trip['price']) ?></td><td><?php echo htmlspecialchars($trip['description'] ?? '') ?></td></tr><?php endforeach; ?></tbody></table></div></main></body></html>

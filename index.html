@@ -3,20 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Karibu Horizons</title>
+  <title>TraveL Den Adventures</title>
   <link rel="stylesheet" href="assets/css/site.css">
-  <link rel="icon" type="image/png" href="assets/images/icon.png">
+  <link rel="icon" type="image/png" href="assets/images/TransparentTravelDen-Logo.png">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="container nav-inner">
     <div class="brand">
-      <div class="logo-mark">KH</div>
-      <div>
-        <h1>Karibu Horizons</h1>
-        <p>Bringing Africa's Heritage to Your Home</p>
-      </div>
+      <img class="site-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
+      <p>Explore Africa. Experience the World.</p>
     </div>
     <button class="mobile-toggle" aria-label="Menu">☰</button>
     <div class="nav-links">
@@ -24,7 +21,6 @@
       <a href="about.html">About</a>
       <a href="packages.html">Packages</a>
       <a href="blog.html">Blog</a>
-      <a href="shop.html">Shop</a>
       <div class="dropdown">
         <button class="dropdown-toggle">Trips ▾</button>
         <div class="dropdown-menu">
@@ -49,11 +45,10 @@
   <div class="card">
     <section class="hero">
       <div class="left">
-        <h2>Discover Authentic African Handcrafted Artifacts & Memorable Trips</h2>
-        <p>Karibu Horizons curates authentic handcrafted curios and unforgettable travel experiences across Kenya and the world. Browse packages, shop unique souvenirs, and book guided safaris and cultural tours.</p>
+        <h2>Discover Unforgettable Adventures Across Kenya and the World</h2>
+        <p>TraveL Den Adventures creates memorable travel experiences across Kenya and the world. Explore curated packages, guided safaris, cultural tours, and international getaways.</p>
         <div class="hero-cta">
           <a class="cta" href="packages.html">Explore Packages</a>
-          <a style="margin-left:12px;" href="shop.html">Visit Shop</a>
         </div>
       </div>
       <div class="right">
@@ -101,41 +96,21 @@
     </div>
   </div>
 
-  <h3>Shop Curios</h3>
-  <div class="cards">
-    <div class="card">
-      <img src="assets/images/curios/curio2.jpeg" alt="curio2">
-      <h3>Hand-carved Zebra Bowl</h3>
-      <p class="muted">Unique handcrafted bowl — perfect as a centerpiece.</p>
-      <button class="primary" onclick="addToCart('zebra-bowl')">Add to cart</button>
+  <section class="info-section" aria-labelledby="plan-your-trip">
+    <h2 id="plan-your-trip">Plan your trip with confidence</h2>
+    <p class="info-intro">Whether you are choosing a Kenyan escape or an international itinerary, start with your dates, group size, preferred pace, and the experiences that matter most to you.</p>
+    <div class="info-grid">
+      <article class="info-card"><h3>1. Choose an experience</h3><p>Compare safari, coast, highland, cultural, and international options in the Trips menu. Each trip page includes a starting outline to help you decide.</p></article>
+      <article class="info-card"><h3>2. Request a booking</h3><p>Send your preferred trip, travel dates, number of travellers, and any accessibility or dietary requests through the booking form.</p></article>
+      <article class="info-card"><h3>3. Confirm the details</h3><p>Before you commit, ask us to confirm availability, the final price, the day-by-day itinerary, inclusions, exclusions, and payment and cancellation terms.</p></article>
     </div>
-    <div class="card">
-      <img src="assets/images/curios/curio3.jpeg" alt="curio3">
-      <h3>Safari Animal Figurines</h3>
-      <p class="muted">Set of 3 — elephant, lion, zebra.</p>
-      <button class="primary" onclick="addToCart('animal-set')">Add to cart</button>
+    <div class="info-callout"><strong>Good to know:</strong> Listed prices are starting prices and itinerary details can vary. A booking request is not a confirmed reservation; wait for written confirmation of the final arrangements.</div>
+    <div class="faq-list">
+      <details><summary>Can I ask for a custom itinerary?</summary><p>Yes. Include your preferred destinations, dates, group size, interests, pace, and approximate budget in your request so the team can discuss suitable options.</p></details>
+      <details><summary>What should I check before paying?</summary><p>Confirm what the quote includes and excludes, accommodation type, transport, meals, activities, entry fees, insurance needs, payment schedule, and cancellation terms.</p></details>
     </div>
-    <div class="card">
-      <img src="assets/images/curios/curio4.jpeg" alt="curio4">
-      <h3>Wooden Salad Serving Set</h3>
-      <p class="muted">Perfect for dining and display.</p>
-      <button class="primary" onclick="addToCart('salad-set')">Add to cart</button>
-    </div>
-  </div>
-
-  <h3>Testimonials</h3>
-  <div class="testimonials">
-    <div class="testimonial testimonial-card">
-      <img src="assets/images/kenyantrips-images/oldtownmombasa.jpeg" alt="Saul Goodman">
-      <strong>Saul Goodman</strong>
-      <p class="muted">"An unforgettable safari — guides were knowledgeable and truly caring. Highly recommended!"</p>
-    </div>
-    <div class="testimonial testimonial-card">
-      <img src="assets/images/safaritrips-images/safari2.jpeg" alt="Sara Wilsson">
-      <strong>Sara Wilsson</strong>
-      <p class="muted">"Beautiful handcrafted bowls — the quality and detail is exceptional."</p>
-    </div>
-  </div>
+    <p><a class="secondary" href="bookings.html">Start a booking request</a> <a href="contact.html">Ask a question</a></p>
+  </section>
 
   <h3>Popular Destinations</h3>
   <div class="cards">
@@ -162,29 +137,26 @@
   <div class="footer-inner">
     <div>
       <div class="footer-brand">
-        <div class="logo-mark">KH</div>
+        <img class="footer-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
         <div>
-          <strong>Karibu Horizons</strong>
-          <div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+          <div class="footer-note">Explore Africa. Experience the World.</div>
         </div>
       </div>
-      <div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
-      <div class="footer-note">We source ethically and support artisan co-ops across Kenya.</div>
+      <div class="footer-note">Email: info@traveldenadventures.com • WhatsApp: +254 711 595474</div>
+      <div class="footer-note">We work with local guides and communities to create responsible travel experiences.</div>
     </div>
     <div class="footer-links">
       <strong>Explore</strong>
       <a href="packages.html">Packages</a>
       <a href="safaritours.html">Safari Trips</a>
-      <a href="shop.html">Shop</a>
     </div>
     <div>
       <strong>Follow us</strong>
       <div class="socials">
-        <a href="#">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="#">Twitter</a>
+        <a href="https://www.facebook.com/share/1HvN41fe4F/" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="https://instagram.com/traveldenadventures1?exln=MXFhcDhwNDlwM2N4Mw%3D%3D" target="_blank" rel="noopener noreferrer">Instagram</a>
       </div>
-      <div class="footer-note">© Karibu Horizons. Designed with care.</div>
+      <div class="footer-note">© TraveL Den Adventures. Designed with care.</div>
     </div>
   </div>
 </footer>

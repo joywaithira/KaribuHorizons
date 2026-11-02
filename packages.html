@@ -3,17 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Packages — Karibu Horizons</title>
-	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/icon.png"></head>
+	<title>Packages — TraveL Den Adventures</title>
+	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/TransparentTravelDen-Logo.png"></head>
 <body>
 <nav class="site-nav">
 	<div class="container nav-inner">
 		<div class="brand">
-			<div class="logo-mark">KH</div>
-			<div>
-				<h1>Karibu Horizons</h1>
-				<p>Bringing Africa's Heritage to Your Home</p>
-			</div>
+			<img class="site-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
+			<p>Explore Africa. Experience the World.</p>
 		</div>
 		<button class="mobile-toggle" aria-label="Menu">☰</button>
 		<div class="nav-links">
@@ -21,7 +18,6 @@
 			<a href="about.html">About</a>
 			<a href="packages.html">Packages</a>
 			<a href="blog.html">Blog</a>
-			<a href="shop.html">Shop</a>
 			<div class="dropdown">
 				<button class="dropdown-toggle">Trips ▾</button>
 				<div class="dropdown-menu">
@@ -42,15 +38,15 @@
 	</div>
 </nav>
 
-<main class="container">
+<main class="container" data-trip-category="package">
 	<h2>Travel Packages</h2>
 	<p class="muted">Choose a ready-made package or contact us to tailor one for you.</p>
 
-	<div class="cards">
+	<div class="cards" data-trip-grid>
 		<div class="card">
 			<img src="assets/images/safaritrips-images/safari1.jpeg" alt="masai">
 			<h3>Kenya Highlights Journey</h3>
-			<p class="muted">7 days • From $1,420</p>
+			<p class="muted">7 days • From KSh 1,420 per person</p>
 			<p>One trip combining Nairobi, the Maasai Mara, and Diani Beach — a full Kenya adventure with culture, wildlife, and coast.</p>
 			<p class="muted"><strong>Route:</strong> Nairobi → Masai Mara → Diani</p>
 			<a href="bookings.html" class="secondary">Book now</a>
@@ -58,7 +54,7 @@
 		<div class="card">
 			<img src="assets/images/kenyantrips-images/mountkenya.jpeg" alt="mount">
 			<h3>Highland & Heritage Circuit</h3>
-			<p class="muted">6 days • From $1,050</p>
+			<p class="muted">6 days • From KSh 1,050 per person</p>
 			<p>A multi-stop Kenyan experience covering mountains, waterfalls, and coastal culture in one seamless itinerary.</p>
 			<p class="muted"><strong>Route:</strong> Nairobi → Mount Kenya → Thompson Falls → Mombasa</p>
 			<a href="bookings.html" class="secondary">Book now</a>
@@ -66,7 +62,7 @@
 		<div class="card">
 			<img src="assets/images/internationaltrips-images/london.jpeg" alt="london">
 			<h3>Europe in One Go</h3>
-			<p class="muted">7 days • From $1,980</p>
+			<p class="muted">7 days • From KSh 1,980 per person</p>
 			<p>Experience multiple European highlights in one trip: London, Paris-inspired city culture, and a selected coastal destination.</p>
 			<p class="muted"><strong>Route:</strong> London → Europe city break → coastal stop</p>
 			<a href="bookings.html" class="secondary">Book now</a>
@@ -92,18 +88,33 @@
 		</div>
 	</div>
 
+	<section class="info-section" aria-labelledby="package-details">
+		<h2 id="package-details">What to confirm for every package</h2>
+		<p class="info-intro">Package summaries are a starting point. Ask for a written quote for your exact dates and party size before making travel arrangements.</p>
+		<div class="info-grid">
+			<article class="info-card"><h3>Accommodation &amp; meals</h3><p>Confirm the property or accommodation standard, room sharing arrangements, meal plan, and any supplements for single occupancy.</p></article>
+			<article class="info-card"><h3>Transport &amp; activities</h3><p>Check pickup and drop-off points, transfers between stops, included guided activities, entry fees, and any optional experiences.</p></article>
+			<article class="info-card"><h3>Price &amp; terms</h3><p>Confirm the currency, per-person or group basis, availability, deposit and balance dates, cancellation conditions, and what is not included.</p></article>
+		</div>
+		<div class="faq-list">
+			<details><summary>Can a package be adjusted?</summary><p>Send your preferred dates, group size, interests, pace, and any must-see stops with your booking request. The team can confirm which changes are available and provide an updated quote.</p></details>
+			<details><summary>Are flights and travel insurance included?</summary><p>Do not assume they are included. Ask for the written itinerary to state clearly whether international or domestic flights, insurance, visas, meals, transfers, and park or attraction fees are covered.</p></details>
+		</div>
+		<p class="info-callout"><strong>Before booking:</strong> Displayed “from” prices are indicative. Availability and final costs can change by date, group size, and supplier confirmation.</p>
+		<p><a class="secondary" href="bookings.html">Request a package quote</a> <a href="contact.html">Contact us about a custom trip</a></p>
+	</section>
+
 </main>
 <footer class="site-footer">
 	<div class="footer-inner">
 		<div>
 			<div class="footer-brand">
-				<div class="logo-mark">KH</div>
+				<img class="footer-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
 				<div>
-					<strong>Karibu Horizons</strong>
-					<div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+					<div class="footer-note">Explore Africa. Experience the World.</div>
 				</div>
 			</div>
-			<div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
+			<div class="footer-note">Email: info@traveldenadventures.com • WhatsApp: +254 711 595474</div>
 		</div>
 		<div class="footer-links">
 			<strong>Explore</strong>
@@ -114,16 +125,14 @@
 		<div>
 			<strong>Follow us</strong>
 			<div class="socials">
-				<a href="#">Facebook</a>
-				<a href="#">Instagram</a>
-				<a href="#">Twitter</a>
-				<a href="#">YouTube</a>
+				<a href="https://www.facebook.com/share/1HvN41fe4F/" target="_blank" rel="noopener noreferrer">Facebook</a>
+				<a href="https://instagram.com/traveldenadventures1?exln=MXFhcDhwNDlwM2N4Mw%3D%3D" target="_blank" rel="noopener noreferrer">Instagram</a>
 			</div>
-			<div class="footer-note">© Karibu Horizons. Support African artisans. Designed with care.</div>
+			<div class="footer-note">© TraveL Den Adventures. Travel responsibly. Designed with care.</div>
 		</div>
 	</div>
 </footer>
 
-<script src="assets/js/site.js"></script>
+<script src="assets/js/site.js?v=kes20260827"></script>
 </body>
 </html>

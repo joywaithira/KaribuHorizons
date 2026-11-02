@@ -3,17 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Contact — Karibu Horizons</title>
-	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/icon.png"></head>
+	<title>Contact — TraveL Den Adventures</title>
+	<link rel="stylesheet" href="assets/css/site.css">  <link rel="icon" type="image/png" href="assets/images/TransparentTravelDen-Logo.png"></head>
 <body>
 <nav class="site-nav">
 	<div class="container nav-inner">
 		<div class="brand">
-			<div class="logo-mark">KH</div>
-			<div>
-				<h1>Karibu Horizons</h1>
-				<p>Bringing Africa's Heritage to Your Home</p>
-			</div>
+			<img class="site-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
+			<p>Explore Africa. Experience the World.</p>
 		</div>
 		<button class="mobile-toggle" aria-label="Menu">☰</button>
 		<div class="nav-links">
@@ -21,7 +18,6 @@
 			<a href="about.html">About</a>
 			<a href="packages.html">Packages</a>
 			<a href="blog.html">Blog</a>
-			<a href="shop.html">Shop</a>
 			<div class="dropdown">
 				<button class="dropdown-toggle">Trips ▾</button>
 				<div class="dropdown-menu">
@@ -48,34 +44,43 @@
 			<div class="card">
 				<h3>Send a Message</h3>
 				<form action="handlers/contact.php" method="post">
-					<div class="form-row"><input name="name" placeholder="Your name" required></div>
+					<div class="form-row"><input name="name" placeholder="First and last name" aria-label="Full name, at least two names" required minlength="3"></div>
 					<div class="form-row"><input name="email" type="email" placeholder="Email" required></div>
-					<div class="form-row"><textarea name="message" placeholder="Message" required></textarea></div>
+					<div class="form-row"><div class="phone-input-group"><select class="country-code" name="phone_country_code" aria-label="Country calling code" required></select><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="Phone number" aria-label="Phone number" pattern="[0-9 ()-]{6,20}" required></div></div>
+					<div class="form-row"><textarea name="message" placeholder="Tell us your destination, preferred dates, number of travellers, and what you would like help with." required></textarea></div>
 					<div class="form-row"><button class="primary" type="submit">Send Message</button></div>
 				</form>
 			</div>
 			<div class="card contact-card-list">
 				<h3>Contact Information</h3>
-				<p class="muted"><strong>Email:</strong><br>info@karibuhorizons.co.ke</p>
-				<p class="muted"><strong>Phone / WhatsApp:</strong><br>+254 711 595474</p>
-				<p class="muted"><strong>Office:</strong><br>A108 Adam Street, Nairobi, Kenya</p>
-				<p class="muted"><strong>Office Hours:</strong><br>Mon–Fri 9:00–17:00 EAT</p>
-				<div style="margin-top:12px"><a class="secondary" href="https://maps.google.com" target="_blank">Open map</a></div>
+				<p class="muted"><strong>Email:</strong><br><a href="mailto:info@traveldenadventures.com">info@traveldenadventures.com</a></p>
+				<p class="muted"><strong>Phone / WhatsApp:</strong><br><a href="https://wa.me/254711595474">+254 711 595474</a></p>
+				<p class="muted"><strong>Office visits:</strong><br>Please contact us first to confirm the current meeting location and availability.</p>
 			</div>
 		</div>
+		<section class="info-section" aria-labelledby="contact-guide">
+			<h2 id="contact-guide">How to get a useful travel quote</h2>
+			<p class="info-intro">A few details help us understand what you need. You do not need a finished itinerary to get in touch.</p>
+			<div class="info-grid">
+				<article class="info-card"><h3>Share the basics</h3><p>Include your preferred destination or trip style, possible dates, number of travellers, and where you expect to start your journey.</p></article>
+				<article class="info-card"><h3>Tell us what matters</h3><p>Mention your approximate budget, interests, travel pace, accommodation preferences, dietary needs, and accessibility requirements.</p></article>
+				<article class="info-card"><h3>Use the booking form for a trip</h3><p>If you already know which listed trip you want, submit a booking request with your contact details and preferred dates.</p></article>
+			</div>
+			<p class="info-callout"><strong>For your security:</strong> Do not send passport numbers, payment card details, or other sensitive documents in a general enquiry message.</p>
+			<p><a class="secondary" href="bookings.html">Request a booking</a> <a href="terms.html">Read the travel terms</a></p>
+		</section>
 </main>
 
 <footer class="site-footer">
 	<div class="footer-inner">
 		<div>
 			<div class="footer-brand">
-				<div class="logo-mark">KH</div>
+				<img class="footer-logo" src="assets/images/TransparentTravelDen-Logo.png" alt="TraveL Den Adventures">
 				<div>
-					<strong>Karibu Horizons</strong>
-					<div class="footer-note">Bringing Africa's Heritage to Your Home</div>
+					<div class="footer-note">Explore Africa. Experience the World.</div>
 				</div>
 			</div>
-			<div class="footer-note">Email: info@karibuhorizons.co.ke • WhatsApp: +254 711 595474</div>
+			<div class="footer-note">Email: info@traveldenadventures.com • WhatsApp: +254 711 595474</div>
 		</div>
 		<div class="footer-links">
 			<strong>Contact</strong>
@@ -85,11 +90,11 @@
 		<div>
 			<strong>Follow us</strong>
 			<div class="socials">
-				<a href="#">Facebook</a>
-				<a href="#">Instagram</a>
+				<a href="https://www.facebook.com/share/1HvN41fe4F/" target="_blank" rel="noopener noreferrer">Facebook</a>
+				<a href="https://instagram.com/traveldenadventures1?exln=MXFhcDhwNDlwM2N4Mw%3D%3D" target="_blank" rel="noopener noreferrer">Instagram</a>
 				<a href="#">LinkedIn</a>
 			</div>
-			<div class="footer-note">© Karibu Horizons. Support African artisans. Designed with care.</div>
+			<div class="footer-note">© TraveL Den Adventures. Travel responsibly. Designed with care.</div>
 		</div>
 	</div>
 </footer>
