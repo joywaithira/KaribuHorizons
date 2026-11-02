@@ -12,5 +12,7 @@ require __DIR__ . '/_auth.php';
     <div class="card"><h3>Blog Posts</h3><p class="muted">Create and edit posts</p><p><a href="posts.php">Open</a></p></div>
     <div class="card"><h3>Trips & Packages</h3><p class="muted">Manage each public trip category</p><p><a href="safari_trips.php">Safari</a> | <a href="kenyan_trips.php">Kenyan</a> | <a href="international_trips.php">International</a> | <a href="package_trips.php">Packages</a></p></div>
     <div class="card"><h3>Trip Bookings</h3><p class="muted">Review customer trip reservations</p><p><a href="bookings.php">Open</a></p></div>
+    <div class="card"><h3>Shop Products</h3><p class="muted">Add, edit, activate, and stock the shop catalogue</p><p><a href="shop_products.php">Manage products</a></p></div>
+    <div class="card"><h3>Shop Orders</h3><p class="muted">Review payments, delivery, stock notes, and order status</p><p><a href="shop_orders.php">Manage orders</a></p></div>
   </div>
 </main></body></html>
